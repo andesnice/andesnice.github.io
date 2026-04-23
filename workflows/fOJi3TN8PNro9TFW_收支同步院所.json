@@ -1,0 +1,229 @@
+{
+  "updatedAt": "2025-07-16T02:29:06.583Z",
+  "createdAt": "2025-06-24T11:10:50.512Z",
+  "id": "fOJi3TN8PNro9TFW",
+  "name": "收支同步院所",
+  "description": null,
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "databaseId": {
+          "__rl": true,
+          "value": "1e855926-7ec9-805b-8509-efab2fd117d7",
+          "mode": "list",
+          "cachedResultName": "任務",
+          "cachedResultUrl": "https://www.notion.so/1e8559267ec9805b8509efab2fd117d7"
+        }
+      },
+      "type": "n8n-nodes-base.notionTrigger",
+      "typeVersion": 1,
+      "position": [
+        -580,
+        40
+      ],
+      "id": "c83f3507-310c-4d3b-9a6c-5c085df00655",
+      "name": "Notion Trigger",
+      "credentials": {
+        "notionApi": {
+          "id": "I0zYECLxHQD5T26r",
+          "name": "玄門真宗"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      title: \"任務 A\",\n         }\n  },\n  {\n    json: {\n      title: \"任務 B\",\n    }\n  },\n  {\n    json: {\n      title: \"任務 C\",\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -60,
+        140
+      ],
+      "id": "197e091e-aa3b-4def-a9b9-751dfffd66b0",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "1e855926-7ec9-805b-8509-efab2fd117d7",
+          "mode": "list",
+          "cachedResultName": "任務",
+          "cachedResultUrl": "https://www.notion.so/1e8559267ec9805b8509efab2fd117d7"
+        },
+        "title": "={{ $json.title }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "大任務|relation",
+              "relationValue": [
+                "={{ $('Notion Trigger').item.json.id }}"
+              ]
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        160,
+        100
+      ],
+      "id": "749a65ad-da73-46d3-8357-2bcc2c9ade06",
+      "name": "Notion",
+      "credentials": {
+        "notionApi": {
+          "id": "I0zYECLxHQD5T26r",
+          "name": "玄門真宗"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "14628c66-d3ff-441f-8d40-4134d4203557",
+              "leftValue": "={{ $json['名稱'] }}",
+              "rightValue": "檢核表",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -280,
+        120
+      ],
+      "id": "9b00f4f1-a427-482a-b3ae-99f33719702e",
+      "name": "Filter"
+    }
+  ],
+  "connections": {
+    "Notion Trigger": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Notion Trigger": {
+      "lastTimeChecked": "2025-06-25T03:47:00.000Z",
+      "possibleDuplicates": [
+        "21d55926-7ec9-8135-b0bb-f8204411eb7c"
+      ]
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "88b15cf6-f064-488b-8284-3d74ea220af8",
+  "activeVersionId": null,
+  "versionCounter": 1,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-06-24T11:10:50.512Z",
+      "createdAt": "2025-06-24T11:10:50.512Z",
+      "role": "workflow:owner",
+      "workflowId": "fOJi3TN8PNro9TFW",
+      "projectId": "CJEzaYFffDb6dVsb",
+      "project": {
+        "updatedAt": "2025-06-20T12:51:16.414Z",
+        "createdAt": "2025-06-20T12:40:37.511Z",
+        "id": "CJEzaYFffDb6dVsb",
+        "name": "林 韋銘 <andesnice@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-06-20T12:40:37.511Z",
+            "createdAt": "2025-06-20T12:40:37.511Z",
+            "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+            "projectId": "CJEzaYFffDb6dVsb",
+            "user": {
+              "updatedAt": "2026-04-23T01:04:10.488Z",
+              "createdAt": "2025-06-20T12:40:30.608Z",
+              "id": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+              "email": "andesnice@gmail.com",
+              "firstName": "林",
+              "lastName": "韋銘",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "firstSuccessfulWorkflowId": "UhnBmWygF2WPjB8v",
+                "userActivatedAt": 1750476523969,
+                "easyAIWorkflowOnboarded": true
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-04-22",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}
