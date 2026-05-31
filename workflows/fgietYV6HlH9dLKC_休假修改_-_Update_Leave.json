@@ -1,0 +1,485 @@
+{
+  "updatedAt": "2026-04-26T13:44:50.658Z",
+  "createdAt": "2026-04-26T13:35:08.200Z",
+  "id": "fgietYV6HlH9dLKC",
+  "name": "休假修改 - Update Leave",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "update-leave",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "2976e7ec-1534-4e25-8256-a4468da75fcd",
+      "name": "Webhook - 接收修改",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "update-leave"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body || $input.first().json;\n\nconst { pageId, date, type, days, note } = body;\n\nif (!pageId || !date || !type || !days) {\n  throw new Error('缺少必要欄位：pageId / date / type / days');\n}\n\nreturn [{\n  json: {\n    pageId: String(pageId).trim(),\n    date:   String(date).trim(),\n    type:   String(type).trim(),\n    days:   Number(days),\n    note:   String(note || '').trim()\n  }\n}];\n"
+      },
+      "id": "72f603d8-a97a-4caa-8839-128099ab2660",
+      "name": "Code - 驗證資料",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.pageId }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "假別|select",
+              "type": "select",
+              "selectValue": "={{ $json.type }}"
+            },
+            {
+              "key": "日期|date",
+              "type": "date",
+              "includeTime": false,
+              "date": "={{ $json.date }}",
+              "timezone": "Asia/Taipei"
+            },
+            {
+              "key": "天數/小時|number",
+              "type": "number",
+              "numberValue": "={{ $json.days }}"
+            },
+            {
+              "key": "備註|rich_text",
+              "textContent": "={{ $json.note }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "77f24dd1-1c9c-4db6-ba72-cf73bb090662",
+      "name": "Notion - 更新頁面",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        0
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "I0zYECLxHQD5T26r",
+          "name": "玄門真宗"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const result = $input.first().json;\nif (result.id) {\n  return [{ json: { success: true } }];\n} else {\n  return [{ json: { success: false, error: '更新失敗，請確認頁面 ID 是否正確' } }];\n}\n"
+      },
+      "id": "d6033c7a-d1ae-45ca-9f10-2651d1057aa0",
+      "name": "Code - 整理回傳",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Headers",
+                "value": "Content-Type"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "194eb731-6fe5-4c73-bb1d-bbe76734be26",
+      "name": "Respond - 回傳結果",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        880,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook - 接收修改": {
+      "main": [
+        [
+          {
+            "node": "Code - 驗證資料",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - 驗證資料": {
+      "main": [
+        [
+          {
+            "node": "Notion - 更新頁面",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion - 更新頁面": {
+      "main": [
+        [
+          {
+            "node": "Code - 整理回傳",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - 整理回傳": {
+      "main": [
+        [
+          {
+            "node": "Respond - 回傳結果",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook - 接收修改": [
+      {
+        "json": {
+          "headers": {
+            "host": "notionton8n.zeabur.app",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "content-length": "104",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7",
+            "content-type": "application/json",
+            "origin": "https://n-d7z64u4zzjpc3vq3ycxhumdegxjpiigpe7uiy5y-0lu-script.googleusercontent.com",
+            "priority": "u=1, i",
+            "referer": "https://n-d7z64u4zzjpc3vq3ycxhumdegxjpiigpe7uiy5y-0lu-script.googleusercontent.com/",
+            "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "39.14.225.155",
+            "x-forwarded-host": "notionton8n.zeabur.app",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-zeabur-ip-country": "TW"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "pageId": "33a55926-7ec9-810a-8a5b-fdb5743c41ab",
+            "date": "2026-04-29",
+            "type": "例假",
+            "days": 1,
+            "note": ""
+          },
+          "webhookUrl": "https://notionton8n.zeabur.app/webhook/update-leave",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "f991587a-932e-4a94-86f1-004cd58d704b",
+  "activeVersionId": "f991587a-932e-4a94-86f1-004cd58d704b",
+  "versionCounter": 13,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-04-26T13:35:08.200Z",
+      "createdAt": "2026-04-26T13:35:08.200Z",
+      "role": "workflow:owner",
+      "workflowId": "fgietYV6HlH9dLKC",
+      "projectId": "CJEzaYFffDb6dVsb",
+      "project": {
+        "updatedAt": "2025-06-20T12:51:16.414Z",
+        "createdAt": "2025-06-20T12:40:37.511Z",
+        "id": "CJEzaYFffDb6dVsb",
+        "name": "林 韋銘 <andesnice@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-06-20T12:40:37.511Z",
+            "createdAt": "2025-06-20T12:40:37.511Z",
+            "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+            "projectId": "CJEzaYFffDb6dVsb",
+            "user": {
+              "updatedAt": "2026-05-31T18:00:00.108Z",
+              "createdAt": "2025-06-20T12:40:30.608Z",
+              "id": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+              "email": "andesnice@gmail.com",
+              "firstName": "林",
+              "lastName": "韋銘",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "firstSuccessfulWorkflowId": "UhnBmWygF2WPjB8v",
+                "userActivatedAt": 1750476523969,
+                "easyAIWorkflowOnboarded": true
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-05-31",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-04-26T13:44:52.102Z",
+    "createdAt": "2026-04-26T13:44:50.660Z",
+    "versionId": "f991587a-932e-4a94-86f1-004cd58d704b",
+    "workflowId": "fgietYV6HlH9dLKC",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "update-leave",
+          "responseMode": "responseNode",
+          "options": {
+            "allowedOrigins": "*"
+          }
+        },
+        "id": "2976e7ec-1534-4e25-8256-a4468da75fcd",
+        "name": "Webhook - 接收修改",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "webhookId": "update-leave"
+      },
+      {
+        "parameters": {
+          "jsCode": "const body = $input.first().json.body || $input.first().json;\n\nconst { pageId, date, type, days, note } = body;\n\nif (!pageId || !date || !type || !days) {\n  throw new Error('缺少必要欄位：pageId / date / type / days');\n}\n\nreturn [{\n  json: {\n    pageId: String(pageId).trim(),\n    date:   String(date).trim(),\n    type:   String(type).trim(),\n    days:   Number(days),\n    note:   String(note || '').trim()\n  }\n}];\n"
+        },
+        "id": "72f603d8-a97a-4caa-8839-128099ab2660",
+        "name": "Code - 驗證資料",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "update",
+          "pageId": {
+            "__rl": true,
+            "value": "={{ $json.pageId }}",
+            "mode": "id"
+          },
+          "propertiesUi": {
+            "propertyValues": [
+              {
+                "key": "假別|select",
+                "type": "select",
+                "selectValue": "={{ $json.type }}"
+              },
+              {
+                "key": "日期|date",
+                "type": "date",
+                "includeTime": false,
+                "date": "={{ $json.date }}",
+                "timezone": "Asia/Taipei"
+              },
+              {
+                "key": "天數/小時|number",
+                "type": "number",
+                "numberValue": "={{ $json.days }}"
+              },
+              {
+                "key": "備註|rich_text",
+                "textContent": "={{ $json.note }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "77f24dd1-1c9c-4db6-ba72-cf73bb090662",
+        "name": "Notion - 更新頁面",
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          448,
+          0
+        ],
+        "credentials": {
+          "notionApi": {
+            "id": "I0zYECLxHQD5T26r",
+            "name": "玄門真宗"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const result = $input.first().json;\nif (result.id) {\n  return [{ json: { success: true } }];\n} else {\n  return [{ json: { success: false, error: '更新失敗，請確認頁面 ID 是否正確' } }];\n}\n"
+        },
+        "id": "d6033c7a-d1ae-45ca-9f10-2651d1057aa0",
+        "name": "Code - 整理回傳",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "name": "Access-Control-Allow-Headers",
+                  "value": "Content-Type"
+                },
+                {
+                  "name": "Content-Type",
+                  "value": "application/json"
+                }
+              ]
+            }
+          }
+        },
+        "id": "194eb731-6fe5-4c73-bb1d-bbe76734be26",
+        "name": "Respond - 回傳結果",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          880,
+          0
+        ]
+      }
+    ],
+    "connections": {
+      "Webhook - 接收修改": {
+        "main": [
+          [
+            {
+              "node": "Code - 驗證資料",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code - 驗證資料": {
+        "main": [
+          [
+            {
+              "node": "Notion - 更新頁面",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notion - 更新頁面": {
+        "main": [
+          [
+            {
+              "node": "Code - 整理回傳",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code - 整理回傳": {
+        "main": [
+          [
+            {
+              "node": "Respond - 回傳結果",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "林 韋銘",
+    "name": "Version f991587a",
+    "description": "",
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-04-26T13:44:52.099Z",
+        "id": 1128,
+        "workflowId": "fgietYV6HlH9dLKC",
+        "versionId": "f991587a-932e-4a94-86f1-004cd58d704b",
+        "event": "activated",
+        "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a"
+      }
+    ]
+  }
+}
