@@ -1,0 +1,427 @@
+{
+  "updatedAt": "2026-05-11T04:58:03.051Z",
+  "createdAt": "2026-05-11T04:43:09.996Z",
+  "id": "CuiN3p7liWU2nISs",
+  "name": "員工登入V2 - 帳號密碼",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "employee-login-V2",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "bc25272a-449c-46f3-9055-33d11a457582",
+      "name": "Webhook - 接收登入",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "6c7bb8b5-70ae-4c45-8149-a415451c51ef"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body || $input.first().json;\nconst { password, account } = body;\nif (!password || !account) {\n  throw new Error('請輸入帳號與密碼');\n}\nreturn [{ json: { password: String(password).trim(), account: String(account).trim() } }];"
+      },
+      "id": "c90f491a-8d4c-460a-aebb-423de3d4d10b",
+      "name": "Code - 驗證輸入",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "efb32b5d83ef4eeda80adb96c07460e2",
+          "mode": "id"
+        },
+        "limit": 1,
+        "simple": false,
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "key": "密碼|rich_text",
+              "condition": "equals",
+              "richTextValue": "={{ $json.password }}"
+            },
+            {
+              "key": "帳號|rich_text",
+              "condition": "equals",
+              "richTextValue": "={{ $json.account }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0789a004-fc05-4237-8626-e561439746bc",
+      "name": "Notion - 查詢員工",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        0
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "I0zYECLxHQD5T26r",
+          "name": "玄門真宗"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const pages = $input.all();\n\n// 先檢查是否有查到資料，沒有代表密碼錯誤\nif (!pages || pages.length === 0 || !pages[0].json.id) {\n  return [{ json: { success: false, error: '密碼錯誤' } }];\n}\n\nconst pageId = pages[0].json.id;         // 取得 Notion 頁面 ID（修改密碼用）\nconst p      = pages[0].json.properties; // 取得所有欄位\n\n// 解析各欄位\nconst name        = p['姓名']?.title?.[0]?.plain_text   ?? '';\nconst canReport   = p['報表權限']?.checkbox              ?? false;\nconst canEdit     = p['異動權限']?.checkbox              ?? false;\nconst canEmployee = p['員工管理權限']?.checkbox          ?? false;\nconst canQuota    = p['休假額度']?.checkbox              ?? false; // 休假額度管理\nconst canDaily    = p['每日填報權限']?.checkbox          ?? false; // 每日工作填寫\nconst canDailyRpt = p['每日報表權限']?.checkbox          ?? false; // 每日報表\n\nreturn [{\n  json: {\n    success: true,\n    pageId,\n    name,\n    permissions: {\n      submit:   true,          // 休假申請：全員開放，不需要 checkbox\n      report:   canReport,     // 休假報表\n      edit:     canEdit,       // 休假異動\n      employee: canEmployee,   // 員工管理\n      quota:    canQuota,      // 休假額度\n      daily:    canDaily,      // 每日工作填寫 → Portal CARDS key 對應\n      dailyrpt: canDailyRpt,   // 每日報表    → Portal CARDS key 對應\n    }\n  }\n}];"
+      },
+      "id": "3fb488a1-344a-4470-b53c-699845e1db0c",
+      "name": "Code - 解析權限",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Headers",
+                "value": "Content-Type"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "ee405561-26a3-46d9-90eb-fd20d4688ad0",
+      "name": "Respond - 回傳權限",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        880,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook - 接收登入": {
+      "main": [
+        [
+          {
+            "node": "Code - 驗證輸入",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - 驗證輸入": {
+      "main": [
+        [
+          {
+            "node": "Notion - 查詢員工",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion - 查詢員工": {
+      "main": [
+        [
+          {
+            "node": "Code - 解析權限",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - 解析權限": {
+      "main": [
+        [
+          {
+            "node": "Respond - 回傳權限",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "b0c3c9ec-105f-4b5d-92ea-14eba4353216",
+  "activeVersionId": "b0c3c9ec-105f-4b5d-92ea-14eba4353216",
+  "versionCounter": 52,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-05-11T04:43:09.996Z",
+      "createdAt": "2026-05-11T04:43:09.996Z",
+      "role": "workflow:owner",
+      "workflowId": "CuiN3p7liWU2nISs",
+      "projectId": "CJEzaYFffDb6dVsb",
+      "project": {
+        "updatedAt": "2025-06-20T12:51:16.414Z",
+        "createdAt": "2025-06-20T12:40:37.511Z",
+        "id": "CJEzaYFffDb6dVsb",
+        "name": "林 韋銘 <andesnice@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-06-20T12:40:37.511Z",
+            "createdAt": "2025-06-20T12:40:37.511Z",
+            "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+            "projectId": "CJEzaYFffDb6dVsb",
+            "user": {
+              "updatedAt": "2026-05-31T18:00:00.108Z",
+              "createdAt": "2025-06-20T12:40:30.608Z",
+              "id": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+              "email": "andesnice@gmail.com",
+              "firstName": "林",
+              "lastName": "韋銘",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "firstSuccessfulWorkflowId": "UhnBmWygF2WPjB8v",
+                "userActivatedAt": 1750476523969,
+                "easyAIWorkflowOnboarded": true
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-05-31",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-05-11T04:49:05.658Z",
+    "createdAt": "2026-05-11T04:49:04.139Z",
+    "versionId": "b0c3c9ec-105f-4b5d-92ea-14eba4353216",
+    "workflowId": "CuiN3p7liWU2nISs",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "employee-login-V2",
+          "responseMode": "responseNode",
+          "options": {
+            "allowedOrigins": "*"
+          }
+        },
+        "id": "bc25272a-449c-46f3-9055-33d11a457582",
+        "name": "Webhook - 接收登入",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "webhookId": "6c7bb8b5-70ae-4c45-8149-a415451c51ef"
+      },
+      {
+        "parameters": {
+          "jsCode": "const body = $input.first().json.body || $input.first().json;\nconst { password, account } = body;\nif (!password || !account) {\n  throw new Error('請輸入帳號與密碼');\n}\nreturn [{ json: { password: String(password).trim(), account: String(account).trim() } }];"
+        },
+        "id": "c90f491a-8d4c-460a-aebb-423de3d4d10b",
+        "name": "Code - 驗證輸入",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "getAll",
+          "databaseId": {
+            "__rl": true,
+            "value": "efb32b5d83ef4eeda80adb96c07460e2",
+            "mode": "id"
+          },
+          "limit": 1,
+          "simple": false,
+          "filterType": "manual",
+          "matchType": "allFilters",
+          "filters": {
+            "conditions": [
+              {
+                "key": "密碼|rich_text",
+                "condition": "equals",
+                "richTextValue": "={{ $json.password }}"
+              },
+              {
+                "key": "帳號|rich_text",
+                "condition": "equals",
+                "richTextValue": "={{ $json.account }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "0789a004-fc05-4237-8626-e561439746bc",
+        "name": "Notion - 查詢員工",
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          448,
+          0
+        ],
+        "credentials": {
+          "notionApi": {
+            "id": "I0zYECLxHQD5T26r",
+            "name": "玄門真宗"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const pages = $input.all();\n\n// 先檢查是否有查到資料，沒有代表密碼錯誤\nif (!pages || pages.length === 0 || !pages[0].json.id) {\n  return [{ json: { success: false, error: '密碼錯誤' } }];\n}\n\nconst pageId = pages[0].json.id;         // 取得 Notion 頁面 ID（修改密碼用）\nconst p      = pages[0].json.properties; // 取得所有欄位\n\n// 解析各欄位\nconst name        = p['姓名']?.title?.[0]?.plain_text   ?? '';\nconst canReport   = p['報表權限']?.checkbox              ?? false;\nconst canEdit     = p['異動權限']?.checkbox              ?? false;\nconst canEmployee = p['員工管理權限']?.checkbox          ?? false;\nconst canQuota    = p['休假額度']?.checkbox              ?? false; // 休假額度管理\nconst canDaily    = p['每日填報權限']?.checkbox          ?? false; // 每日工作填寫\nconst canDailyRpt = p['每日報表權限']?.checkbox          ?? false; // 每日報表\n\nreturn [{\n  json: {\n    success: true,\n    pageId,\n    name,\n    permissions: {\n      submit:   true,          // 休假申請：全員開放，不需要 checkbox\n      report:   canReport,     // 休假報表\n      edit:     canEdit,       // 休假異動\n      employee: canEmployee,   // 員工管理\n      quota:    canQuota,      // 休假額度\n      daily:    canDaily,      // 每日工作填寫 → Portal CARDS key 對應\n      dailyrpt: canDailyRpt,   // 每日報表    → Portal CARDS key 對應\n    }\n  }\n}];"
+        },
+        "id": "3fb488a1-344a-4470-b53c-699845e1db0c",
+        "name": "Code - 解析權限",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "name": "Access-Control-Allow-Headers",
+                  "value": "Content-Type"
+                },
+                {
+                  "name": "Content-Type",
+                  "value": "application/json"
+                }
+              ]
+            }
+          }
+        },
+        "id": "ee405561-26a3-46d9-90eb-fd20d4688ad0",
+        "name": "Respond - 回傳權限",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          880,
+          0
+        ]
+      }
+    ],
+    "connections": {
+      "Webhook - 接收登入": {
+        "main": [
+          [
+            {
+              "node": "Code - 驗證輸入",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code - 驗證輸入": {
+        "main": [
+          [
+            {
+              "node": "Notion - 查詢員工",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notion - 查詢員工": {
+        "main": [
+          [
+            {
+              "node": "Code - 解析權限",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code - 解析權限": {
+        "main": [
+          [
+            {
+              "node": "Respond - 回傳權限",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "林 韋銘",
+    "name": "Version b0c3c9ec",
+    "description": "",
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-05-11T04:49:05.656Z",
+        "id": 1242,
+        "workflowId": "CuiN3p7liWU2nISs",
+        "versionId": "b0c3c9ec-105f-4b5d-92ea-14eba4353216",
+        "event": "activated",
+        "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a"
+      }
+    ]
+  }
+}
