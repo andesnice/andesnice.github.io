@@ -1,0 +1,302 @@
+{
+  "updatedAt": "2026-04-20T03:46:01.178Z",
+  "createdAt": "2026-03-19T05:13:12.797Z",
+  "id": "GNVyD7qaUzxgj7oX",
+  "name": "30.休假填表",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "holiday",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -416,
+        -288
+      ],
+      "id": "15eca17a-1f1f-4213-823d-6a50d1490c50",
+      "name": "Webhook",
+      "webhookId": "c8aab67c-1c74-43cd-83b6-aeb748f35838",
+      "alwaysOutputData": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const name = $input.first().json.body.data.fields[0].value;\nconst mounth = $input.first().json.body.data.fields[2].value;\nconst bp = $input.first().json.body.data.fields[1].value;\nconst matrixValue = $input.first().json.body.data.fields[3].value; \n\nconst mounthmap = {\n  \"92795a62-b32d-48f0-a5f7-cd7bb896fab2\": \"1\",\n  \"4d212122-60bd-48ad-9598-7aacbff92b43\": \"2\",\n  \"aede944b-7031-458c-9635-81aa7a7b371a\": \"3\",\n  \"b01b618f-a732-4b17-990f-8ebffa836cdc\": \"4\",\n  \"862bc59c-9a82-4390-b4f8-3c6df7c3313f\": \"5\",\n  \"83bc8cbf-c83a-4707-be0e-4c992fc37403\": \"6\",\n  \"28184e0e-3422-44de-8126-a17fa75b4a72\": \"7\",\n  \"1244feb2-820b-4c46-bedf-fbd1537e33ac\": \"8\",\n  \"2a178d53-3780-4dc4-90a9-38517a05af07\": \"9\",\n  \"e1d670b1-0c3e-4ffe-9987-887c54cfa897\": \"10\",\n  \"61b49c82-c67f-4508-b412-5afa3088f792\": \"11\",\n  \"9cb76ff2-e6d8-4179-9928-ffab1c691844\": \"12\"\n};\n\nconst timemap = {\n  \"afd763e4-cb46-4e3b-b33a-983fcfaab923\": \"休假\",\n  \"2dd8afbb-b226-400e-9411-295b39e5efbd\": \"事假\",\n  \"541602bb-17e5-4b10-9a4c-a7959c25d175\": \"例假\",\n};\n\nconst rowmap = {\n  \"0443b3ea-1803-4e2b-8742-1247edd16d92\": \"1\",\n  \"3de3380d-deef-4609-be56-d930766eb963\": \"2\",\n  \"63a10355-ba93-4278-9332-f894d9cec8c6\": \"3\",\n  \"bfd61c3d-5838-4431-a7f8-1c0543a0fa8c\": \"4\",\n  \"0dda00cd-832e-4f86-b9c7-450ea1346479\": \"5\",\n  \"ec73b354-ee3c-40c2-b592-889574c08f81\": \"6\",\n  \"497a1920-beaf-47db-90c4-9333e70a9d90\": \"7\",\n  \"bfe1a936-b394-4a10-bf17-3878a677986a\": \"8\",\n  \"3a658acc-05bb-4235-afac-2b3e1d171696\": \"9\",\n  \"502259f8-caee-4b44-b91b-c1b9f73e6533\": \"10\",\n  \"6f2ac5f2-3d0e-4fab-939b-c150ebeba3ac\": \"11\",\n  \"a9fdcbc4-785b-440f-8bf1-2ae52bf33452\": \"12\",\n  \"19f9f17f-2570-4871-aa6f-92a585fefc51\": \"13\",\n  \"0190d4f6-a5fc-43cb-94aa-7fd280ecf340\": \"14\",\n  \"a439ff64-89b0-4743-a17d-73fefa27d6e6\": \"15\",\n  \"87fb8bda-3a15-4ed5-b068-32890c18d3d1\": \"16\",\n  \"b4bbe2ba-0c77-4460-875e-395a1bd95cc9\": \"17\",\n  \"72c3cc99-6909-4439-ad96-2eeb6c345bc6\": \"18\",\n  \"ff4755ea-2aa2-4ac6-9c8e-45e8e3f22c30\": \"19\",\n  \"63431e13-9461-4b86-9cd0-5f5ca5ebaabf\": \"20\",\n  \"8fb4380f-e472-4bb6-a678-ed4651af1c4b\": \"21\",\n  \"394337af-cab3-44e8-a62c-fbf177c13aa8\": \"22\",\n  \"aa147a39-ff6c-40c6-9f1a-38e9f1dd402e\": \"23\",\n  \"0ce5c1e7-214f-400d-8c22-cb2ae7564d77\": \"24\",\n  \"14d6dc95-8565-44c7-8d4d-12888896a591\": \"25\",\n  \"0e342470-3f61-4322-93f8-12e70a2f903d\": \"26\",\n  \"4820808e-bf17-4a4a-b383-6e2a9f936226\": \"27\",\n  \"b7c0d81a-6cb8-47de-beed-8d1f242444b1\": \"28\",\n  \"d132556c-8ece-428b-8315-88eaccd7fed8\": \"29\",\n  \"c65f0154-8ada-4fb4-a25d-c74d773e838d\": \"30\",\n  \"309ef430-06a4-408f-9e64-7b51e7baa704\": \"31\"\n};\n\nreturn Object.entries(matrixValue)\n  .map(([rowId, selectedColumnIds]) => {\n    // 這裡我們直接輸出簡化的值，因為你在 Notion Node 裡面會對應這些欄位\n    return {\n      json: {\n        姓名: name,\n        備註: bp,\n        日期: rowmap[rowId],\n        月份: mounthmap[mounth],\n        區分_假別: (selectedColumnIds || [])\n          .map(id => timemap[id])\n          .filter(val => val) \n      }\n    };\n  })\n  .filter(item => item.json.日期); // 確保有日期才建立"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -96,
+        -304
+      ],
+      "id": "977e18dd-4bde-424d-a93b-114cd7991010",
+      "name": "Co",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "bed55926-7ec9-8350-be57-8192c9da4282",
+          "mode": "list",
+          "cachedResultName": "休假表",
+          "cachedResultUrl": "https://www.notion.so/bed559267ec98350be578192c9da4282"
+        },
+        "title": "={{ $json['姓名'] }}",
+        "simple": false,
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "日期|select",
+              "selectValue": "={{ $json['日期'] }}"
+            },
+            {
+              "key": "假別|multi_select",
+              "multiSelectValue": "={{ $json['區分_假別'][0] }}"
+            },
+            {
+              "key": "月份|select",
+              "selectValue": "={{ $json['月份'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        -272
+      ],
+      "id": "beb752e6-5800-4960-972b-0743ebf785ca",
+      "name": "Create a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "I0zYECLxHQD5T26r",
+          "name": "玄門真宗"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Co",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Co": {
+      "main": [
+        [
+          {
+            "node": "Create a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "7ee96a84-85b5-4971-8512-df560bebaae0",
+  "activeVersionId": "7ee96a84-85b5-4971-8512-df560bebaae0",
+  "versionCounter": 30,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-03-19T05:13:12.797Z",
+      "createdAt": "2026-03-19T05:13:12.797Z",
+      "role": "workflow:owner",
+      "workflowId": "GNVyD7qaUzxgj7oX",
+      "projectId": "CJEzaYFffDb6dVsb",
+      "project": {
+        "updatedAt": "2025-06-20T12:51:16.414Z",
+        "createdAt": "2025-06-20T12:40:37.511Z",
+        "id": "CJEzaYFffDb6dVsb",
+        "name": "林 韋銘 <andesnice@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-06-20T12:40:37.511Z",
+            "createdAt": "2025-06-20T12:40:37.511Z",
+            "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+            "projectId": "CJEzaYFffDb6dVsb",
+            "user": {
+              "updatedAt": "2026-05-31T18:00:00.108Z",
+              "createdAt": "2025-06-20T12:40:30.608Z",
+              "id": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+              "email": "andesnice@gmail.com",
+              "firstName": "林",
+              "lastName": "韋銘",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "firstSuccessfulWorkflowId": "UhnBmWygF2WPjB8v",
+                "userActivatedAt": 1750476523969,
+                "easyAIWorkflowOnboarded": true
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-05-31",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-21T08:33:39.158Z",
+      "createdAt": "2025-07-21T08:33:39.158Z",
+      "id": "bFn7sHjiXxofuzm7",
+      "name": "玄門山"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-03-19T05:39:01.185Z",
+    "createdAt": "2026-03-19T05:38:59.368Z",
+    "versionId": "7ee96a84-85b5-4971-8512-df560bebaae0",
+    "workflowId": "GNVyD7qaUzxgj7oX",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "holiday",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -416,
+          -288
+        ],
+        "id": "15eca17a-1f1f-4213-823d-6a50d1490c50",
+        "name": "Webhook",
+        "webhookId": "c8aab67c-1c74-43cd-83b6-aeb748f35838",
+        "alwaysOutputData": false,
+        "notesInFlow": false
+      },
+      {
+        "parameters": {
+          "jsCode": "const name = $input.first().json.body.data.fields[0].value;\nconst mounth = $input.first().json.body.data.fields[2].value;\nconst bp = $input.first().json.body.data.fields[1].value;\nconst matrixValue = $input.first().json.body.data.fields[3].value; \n\nconst mounthmap = {\n  \"92795a62-b32d-48f0-a5f7-cd7bb896fab2\": \"1\",\n  \"4d212122-60bd-48ad-9598-7aacbff92b43\": \"2\",\n  \"aede944b-7031-458c-9635-81aa7a7b371a\": \"3\",\n  \"b01b618f-a732-4b17-990f-8ebffa836cdc\": \"4\",\n  \"862bc59c-9a82-4390-b4f8-3c6df7c3313f\": \"5\",\n  \"83bc8cbf-c83a-4707-be0e-4c992fc37403\": \"6\",\n  \"28184e0e-3422-44de-8126-a17fa75b4a72\": \"7\",\n  \"1244feb2-820b-4c46-bedf-fbd1537e33ac\": \"8\",\n  \"2a178d53-3780-4dc4-90a9-38517a05af07\": \"9\",\n  \"e1d670b1-0c3e-4ffe-9987-887c54cfa897\": \"10\",\n  \"61b49c82-c67f-4508-b412-5afa3088f792\": \"11\",\n  \"9cb76ff2-e6d8-4179-9928-ffab1c691844\": \"12\"\n};\n\nconst timemap = {\n  \"afd763e4-cb46-4e3b-b33a-983fcfaab923\": \"休假\",\n  \"2dd8afbb-b226-400e-9411-295b39e5efbd\": \"事假\",\n  \"541602bb-17e5-4b10-9a4c-a7959c25d175\": \"例假\",\n};\n\nconst rowmap = {\n  \"0443b3ea-1803-4e2b-8742-1247edd16d92\": \"1\",\n  \"3de3380d-deef-4609-be56-d930766eb963\": \"2\",\n  \"63a10355-ba93-4278-9332-f894d9cec8c6\": \"3\",\n  \"bfd61c3d-5838-4431-a7f8-1c0543a0fa8c\": \"4\",\n  \"0dda00cd-832e-4f86-b9c7-450ea1346479\": \"5\",\n  \"ec73b354-ee3c-40c2-b592-889574c08f81\": \"6\",\n  \"497a1920-beaf-47db-90c4-9333e70a9d90\": \"7\",\n  \"bfe1a936-b394-4a10-bf17-3878a677986a\": \"8\",\n  \"3a658acc-05bb-4235-afac-2b3e1d171696\": \"9\",\n  \"502259f8-caee-4b44-b91b-c1b9f73e6533\": \"10\",\n  \"6f2ac5f2-3d0e-4fab-939b-c150ebeba3ac\": \"11\",\n  \"a9fdcbc4-785b-440f-8bf1-2ae52bf33452\": \"12\",\n  \"19f9f17f-2570-4871-aa6f-92a585fefc51\": \"13\",\n  \"0190d4f6-a5fc-43cb-94aa-7fd280ecf340\": \"14\",\n  \"a439ff64-89b0-4743-a17d-73fefa27d6e6\": \"15\",\n  \"87fb8bda-3a15-4ed5-b068-32890c18d3d1\": \"16\",\n  \"b4bbe2ba-0c77-4460-875e-395a1bd95cc9\": \"17\",\n  \"72c3cc99-6909-4439-ad96-2eeb6c345bc6\": \"18\",\n  \"ff4755ea-2aa2-4ac6-9c8e-45e8e3f22c30\": \"19\",\n  \"63431e13-9461-4b86-9cd0-5f5ca5ebaabf\": \"20\",\n  \"8fb4380f-e472-4bb6-a678-ed4651af1c4b\": \"21\",\n  \"394337af-cab3-44e8-a62c-fbf177c13aa8\": \"22\",\n  \"aa147a39-ff6c-40c6-9f1a-38e9f1dd402e\": \"23\",\n  \"0ce5c1e7-214f-400d-8c22-cb2ae7564d77\": \"24\",\n  \"14d6dc95-8565-44c7-8d4d-12888896a591\": \"25\",\n  \"0e342470-3f61-4322-93f8-12e70a2f903d\": \"26\",\n  \"4820808e-bf17-4a4a-b383-6e2a9f936226\": \"27\",\n  \"b7c0d81a-6cb8-47de-beed-8d1f242444b1\": \"28\",\n  \"d132556c-8ece-428b-8315-88eaccd7fed8\": \"29\",\n  \"c65f0154-8ada-4fb4-a25d-c74d773e838d\": \"30\",\n  \"309ef430-06a4-408f-9e64-7b51e7baa704\": \"31\"\n};\n\nreturn Object.entries(matrixValue)\n  .map(([rowId, selectedColumnIds]) => {\n    // 這裡我們直接輸出簡化的值，因為你在 Notion Node 裡面會對應這些欄位\n    return {\n      json: {\n        姓名: name,\n        備註: bp,\n        日期: rowmap[rowId],\n        月份: mounthmap[mounth],\n        區分_假別: (selectedColumnIds || [])\n          .map(id => timemap[id])\n          .filter(val => val) \n      }\n    };\n  })\n  .filter(item => item.json.日期); // 確保有日期才建立"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -96,
+          -304
+        ],
+        "id": "977e18dd-4bde-424d-a93b-114cd7991010",
+        "name": "Co",
+        "alwaysOutputData": false
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "databaseId": {
+            "__rl": true,
+            "value": "bed55926-7ec9-8350-be57-8192c9da4282",
+            "mode": "list",
+            "cachedResultName": "休假表",
+            "cachedResultUrl": "https://www.notion.so/bed559267ec98350be578192c9da4282"
+          },
+          "title": "={{ $json['姓名'] }}",
+          "simple": false,
+          "propertiesUi": {
+            "propertyValues": [
+              {
+                "key": "日期|select",
+                "selectValue": "={{ $json['日期'] }}"
+              },
+              {
+                "key": "假別|multi_select",
+                "multiSelectValue": "={{ $json['區分_假別'][0] }}"
+              },
+              {
+                "key": "月份|select",
+                "selectValue": "={{ $json['月份'] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          240,
+          -272
+        ],
+        "id": "beb752e6-5800-4960-972b-0743ebf785ca",
+        "name": "Create a database page",
+        "credentials": {
+          "notionApi": {
+            "id": "I0zYECLxHQD5T26r",
+            "name": "玄門真宗"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Co",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Co": {
+        "main": [
+          [
+            {
+              "node": "Create a database page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "林 韋銘",
+    "name": "Version 7ee96a84",
+    "description": "",
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-03-19T05:39:01.169Z",
+        "id": 720,
+        "workflowId": "GNVyD7qaUzxgj7oX",
+        "versionId": "7ee96a84-85b5-4971-8512-df560bebaae0",
+        "event": "activated",
+        "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a"
+      }
+    ]
+  }
+}
