@@ -1,0 +1,863 @@
+{
+  "updatedAt": "2026-03-28T04:40:45.175Z",
+  "createdAt": "2025-07-13T02:58:38.455Z",
+  "id": "G4c6OQuM6Vmm0puk",
+  "name": "notion支出自動對應帳本(每秒掃描沒同步的",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a4f4c950-33ee-46b0-b0b8-d8c8c4e933e0",
+              "leftValue": "={{ $node[\"搜尋盈餘帳本\"].json.isNotEmpty()}}",
+              "rightValue": "=0",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {
+          "ignoreCase": false
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -32,
+        -48
+      ],
+      "id": "f1cd340e-85c3-4aa9-9109-6ba99244c908",
+      "name": "If",
+      "alwaysOutputData": false,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "8ba66dc4-94e0-49e7-93a1-5f92c6f58bd9",
+          "mode": "list",
+          "cachedResultName": "盈餘",
+          "cachedResultUrl": "https://www.notion.so/8ba66dc494e049e793a15f92c6f58bd9"
+        },
+        "title": "={{ $node[\"Code\"].json.book_name}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        48
+      ],
+      "id": "5bd8fc1c-ef2c-4f23-96ce-b852a626dae0",
+      "name": "建立盈餘DB的帳本名稱",
+      "credentials": {
+        "notionApi": {
+          "id": "GQXAagfHT864gK5q",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "8ba66dc4-94e0-49e7-93a1-5f92c6f58bd9",
+          "mode": "list",
+          "cachedResultName": "盈餘",
+          "cachedResultUrl": "https://www.notion.so/8ba66dc494e049e793a15f92c6f58bd9"
+        },
+        "returnAll": true,
+        "simple": false,
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "key": "=帳本|title",
+              "condition": "equals",
+              "titleValue": "={{ $json.book_name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        -256,
+        -48
+      ],
+      "id": "95f3c943-0282-4621-886f-480a91f4f798",
+      "name": "搜尋盈餘帳本",
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "GQXAagfHT864gK5q",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      book_name:\n       // $input.first().json[\"帳本自動歸類\"].toString()\n      $input.first().json.properties['帳本自動歸類'].formula.string\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        -48
+      ],
+      "id": "65d2150e-a31f-42ec-8a3b-73bf037971d7",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('get notion').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "帳本|relation",
+              "relationValue": [
+                "={{ $json.id }}"
+              ]
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        48
+      ],
+      "id": "ce5e98e1-4101-445e-a20e-e04df577a2a1",
+      "name": "更新新資料帳本1",
+      "credentials": {
+        "notionApi": {
+          "id": "GQXAagfHT864gK5q",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "把新資料的自動對應帳本抓取出來並且轉換成字串\n在額外命名叫book.name\n\n",
+        "height": 280,
+        "width": 360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -612,
+        -168
+      ],
+      "id": "6b541031-79cd-4510-8c12-b6e9f2994b8d",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "搜尋盈餘帳本資料，是否有和book.name相同的名字，\n有就會產出資料",
+        "height": 208,
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        -240
+      ],
+      "id": "48e52244-6066-4de3-b2c0-e6489a9eeede",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "根據前一個節點有產出資料就走true線路\n沒有產出資料則走false線路\n\n{{ $node[\"搜尋盈餘帳本\"].json.isNotEmpty()}}<< $node[\"搜尋盈餘帳本\"]，這個代表意思是\"搜尋盈餘帳本\"節點",
+        "height": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -104,
+        -208
+      ],
+      "id": "a46e32c8-8a67-4de8-aa28-651fd4a6fb59",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -928,
+        -48
+      ],
+      "id": "a35297a4-c27f-4664-a246-a1b5f44c8d05",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('get notion').all().randomItem().json.id}}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "帳本|relation",
+              "relationValue": [
+                "={{ $json.id }}"
+              ]
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        352,
+        -160
+      ],
+      "id": "5c69fe71-7c03-436a-9326-f94607e8bd46",
+      "name": "Notion1",
+      "credentials": {
+        "notionApi": {
+          "id": "GQXAagfHT864gK5q",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "dbe28d35-10e0-4942-8ae2-9c62045a9769",
+          "mode": "list",
+          "cachedResultName": "支出",
+          "cachedResultUrl": "https://www.notion.so/dbe28d3510e049428ae29c62045a9769"
+        },
+        "limit": 1,
+        "simple": false,
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "key": "帳本|relation",
+              "condition": "is_empty"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        -704,
+        -48
+      ],
+      "id": "df013964-0492-432a-a81f-86b486f40836",
+      "name": "get notion",
+      "credentials": {
+        "notionApi": {
+          "id": "GQXAagfHT864gK5q",
+          "name": "Notion account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Notion1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "建立盈餘DB的帳本名稱",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "建立盈餘DB的帳本名稱": {
+      "main": [
+        [
+          {
+            "node": "更新新資料帳本1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "搜尋盈餘帳本": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "搜尋盈餘帳本",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "get notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get notion": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": {
+    "node:Notion Trigger": {
+      "lastTimeChecked": "2025-07-13T02:48:00.000Z",
+      "possibleDuplicates": [
+        "22f8db83-bd93-80f4-9e94-ea41a86ff504"
+      ]
+    },
+    "node:每分鐘抓取支出新資料": {
+      "lastTimeChecked": "2025-06-23T01:50:00.000Z",
+      "possibleDuplicates": [
+        "21b8db83-bd93-8004-9f37-cd25e6105794"
+      ]
+    },
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "4e08f49e-86d9-4e5d-a21d-54ab263c57c6",
+  "activeVersionId": "20ff0259-a446-4f37-805a-603fcf0cf845",
+  "versionCounter": 15,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-07-13T02:58:38.455Z",
+      "createdAt": "2025-07-13T02:58:38.455Z",
+      "role": "workflow:owner",
+      "workflowId": "G4c6OQuM6Vmm0puk",
+      "projectId": "CJEzaYFffDb6dVsb",
+      "project": {
+        "updatedAt": "2025-06-20T12:51:16.414Z",
+        "createdAt": "2025-06-20T12:40:37.511Z",
+        "id": "CJEzaYFffDb6dVsb",
+        "name": "林 韋銘 <andesnice@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-06-20T12:40:37.511Z",
+            "createdAt": "2025-06-20T12:40:37.511Z",
+            "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+            "projectId": "CJEzaYFffDb6dVsb",
+            "user": {
+              "updatedAt": "2026-05-31T18:00:00.108Z",
+              "createdAt": "2025-06-20T12:40:30.608Z",
+              "id": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+              "email": "andesnice@gmail.com",
+              "firstName": "林",
+              "lastName": "韋銘",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "firstSuccessfulWorkflowId": "UhnBmWygF2WPjB8v",
+                "userActivatedAt": 1750476523969,
+                "easyAIWorkflowOnboarded": true
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-05-31",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2025-12-03T13:27:49.198Z",
+    "createdAt": "2025-12-03T13:27:49.198Z",
+    "versionId": "20ff0259-a446-4f37-805a-603fcf0cf845",
+    "workflowId": "G4c6OQuM6Vmm0puk",
+    "nodes": [
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "a4f4c950-33ee-46b0-b0b8-d8c8c4e933e0",
+                "leftValue": "={{ $node[\"搜尋盈餘帳本\"].json.isNotEmpty()}}",
+                "rightValue": "=0",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {
+            "ignoreCase": false
+          }
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          440,
+          200
+        ],
+        "id": "f1cd340e-85c3-4aa9-9109-6ba99244c908",
+        "name": "If",
+        "alwaysOutputData": false,
+        "executeOnce": false
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "databaseId": {
+            "__rl": true,
+            "value": "8ba66dc4-94e0-49e7-93a1-5f92c6f58bd9",
+            "mode": "list",
+            "cachedResultName": "盈餘",
+            "cachedResultUrl": "https://www.notion.so/8ba66dc494e049e793a15f92c6f58bd9"
+          },
+          "title": "={{ $node[\"Code\"].json.book_name}}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          660,
+          360
+        ],
+        "id": "5bd8fc1c-ef2c-4f23-96ce-b852a626dae0",
+        "name": "建立盈餘DB的帳本名稱",
+        "credentials": {
+          "notionApi": {
+            "id": "GQXAagfHT864gK5q",
+            "name": "Notion account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "getAll",
+          "databaseId": {
+            "__rl": true,
+            "value": "8ba66dc4-94e0-49e7-93a1-5f92c6f58bd9",
+            "mode": "list",
+            "cachedResultName": "盈餘",
+            "cachedResultUrl": "https://www.notion.so/8ba66dc494e049e793a15f92c6f58bd9"
+          },
+          "returnAll": true,
+          "simple": false,
+          "filterType": "manual",
+          "filters": {
+            "conditions": [
+              {
+                "key": "=帳本|title",
+                "condition": "equals",
+                "titleValue": "={{ $json.book_name }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          120,
+          -80
+        ],
+        "id": "95f3c943-0282-4621-886f-480a91f4f798",
+        "name": "搜尋盈餘帳本",
+        "alwaysOutputData": true,
+        "credentials": {
+          "notionApi": {
+            "id": "GQXAagfHT864gK5q",
+            "name": "Notion account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "return [\n  {\n    json: {\n      book_name:\n       // $input.first().json[\"帳本自動歸類\"].toString()\n      $input.first().json.properties['帳本自動歸類'].formula.string\n    }\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -300,
+          -80
+        ],
+        "id": "65d2150e-a31f-42ec-8a3b-73bf037971d7",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "update",
+          "pageId": {
+            "__rl": true,
+            "value": "={{ $('get notion').item.json.id }}",
+            "mode": "id"
+          },
+          "propertiesUi": {
+            "propertyValues": [
+              {
+                "key": "帳本|relation",
+                "relationValue": [
+                  "={{ $json.id }}"
+                ]
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          900,
+          340
+        ],
+        "id": "ce5e98e1-4101-445e-a20e-e04df577a2a1",
+        "name": "更新新資料帳本1",
+        "credentials": {
+          "notionApi": {
+            "id": "GQXAagfHT864gK5q",
+            "name": "Notion account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "content": "把新資料的自動對應帳本抓取出來並且轉換成字串\n在額外命名叫book.name\n\n",
+          "height": 280,
+          "width": 360
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -440,
+          -180
+        ],
+        "id": "6b541031-79cd-4510-8c12-b6e9f2994b8d",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "content": "搜尋盈餘帳本資料，是否有和book.name相同的名字，\n有就會產出資料"
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          60,
+          -180
+        ],
+        "id": "48e52244-6066-4de3-b2c0-e6489a9eeede",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {
+          "content": "根據前一個節點有產出資料就走true線路\n沒有產出資料則走false線路\n\n{{ $node[\"搜尋盈餘帳本\"].json.isNotEmpty()}}<< $node[\"搜尋盈餘帳本\"]，這個代表意思是\"搜尋盈餘帳本\"節點",
+          "height": 320
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          320,
+          40
+        ],
+        "id": "a46e32c8-8a67-4de8-aa28-651fd4a6fb59",
+        "name": "Sticky Note2"
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -920,
+          -120
+        ],
+        "id": "a35297a4-c27f-4664-a246-a1b5f44c8d05",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "update",
+          "pageId": {
+            "__rl": true,
+            "value": "={{ $('get notion').all().randomItem().json.id}}",
+            "mode": "id"
+          },
+          "propertiesUi": {
+            "propertyValues": [
+              {
+                "key": "帳本|relation",
+                "relationValue": [
+                  "={{ $json.id }}"
+                ]
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          840,
+          120
+        ],
+        "id": "5c69fe71-7c03-436a-9326-f94607e8bd46",
+        "name": "Notion1",
+        "credentials": {
+          "notionApi": {
+            "id": "GQXAagfHT864gK5q",
+            "name": "Notion account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "getAll",
+          "databaseId": {
+            "__rl": true,
+            "value": "dbe28d35-10e0-4942-8ae2-9c62045a9769",
+            "mode": "list",
+            "cachedResultName": "支出",
+            "cachedResultUrl": "https://www.notion.so/dbe28d3510e049428ae29c62045a9769"
+          },
+          "limit": 1,
+          "simple": false,
+          "filterType": "manual",
+          "matchType": "allFilters",
+          "filters": {
+            "conditions": [
+              {
+                "key": "帳本|relation",
+                "condition": "is_empty"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          -660,
+          -140
+        ],
+        "id": "df013964-0492-432a-a81f-86b486f40836",
+        "name": "get notion",
+        "credentials": {
+          "notionApi": {
+            "id": "GQXAagfHT864gK5q",
+            "name": "Notion account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Notion1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "建立盈餘DB的帳本名稱",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "建立盈餘DB的帳本名稱": {
+        "main": [
+          [
+            {
+              "node": "更新新資料帳本1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "搜尋盈餘帳本": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "搜尋盈餘帳本",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "get notion",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get notion": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2025-09-10T06:29:50.580Z",
+        "id": 1,
+        "workflowId": "G4c6OQuM6Vmm0puk",
+        "versionId": "20ff0259-a446-4f37-805a-603fcf0cf845",
+        "event": "activated",
+        "userId": null
+      },
+      {
+        "createdAt": "2025-12-31T10:15:39.333Z",
+        "id": 150,
+        "workflowId": "G4c6OQuM6Vmm0puk",
+        "versionId": "20ff0259-a446-4f37-805a-603fcf0cf845",
+        "event": "deactivated",
+        "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a"
+      },
+      {
+        "createdAt": "2026-01-12T10:31:00.416Z",
+        "id": 213,
+        "workflowId": "G4c6OQuM6Vmm0puk",
+        "versionId": "20ff0259-a446-4f37-805a-603fcf0cf845",
+        "event": "activated",
+        "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a"
+      }
+    ]
+  }
+}
