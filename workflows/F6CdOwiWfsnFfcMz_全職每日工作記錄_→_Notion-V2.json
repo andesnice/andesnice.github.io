@@ -1,0 +1,1525 @@
+{
+  "updatedAt": "2026-05-13T11:43:46.440Z",
+  "createdAt": "2026-05-10T13:40:01.257Z",
+  "id": "F6CdOwiWfsnFfcMz",
+  "name": "全職每日工作記錄 → Notion-V2",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "daily-report-V2",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        192
+      ],
+      "id": "866694bf-09a9-486b-a52d-edd531189616",
+      "webhookId": "fb6705a4-2a85-4cad-9f4b-743012768b1c"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "27da46648c034bd798e785f6c1c98c34",
+          "mode": "id"
+        },
+        "title": "={{ $json[\"姓名\"] }}",
+        "simple": false,
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "日期|date",
+              "type": "date",
+              "includeTime": false,
+              "date": "={{ $json[\"日期\"] }}"
+            },
+            {
+              "key": "預約_總數|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"預約_總數\"] }}"
+            },
+            {
+              "key": "預約_完成|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"預約_完成\"] }}"
+            },
+            {
+              "key": "預約_未到|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"預約_未到\"] }}"
+            },
+            {
+              "key": "預約_備註|rich_text",
+              "textContent": "={{ $json[\"預約_備註\"] }}"
+            },
+            {
+              "key": "財務_收入|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"財務_收入\"] }}"
+            },
+            {
+              "key": "財務_完成率|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"財務_完成率\"] }}"
+            },
+            {
+              "key": "財務_未完成|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"財務_未完成\"] }}"
+            },
+            {
+              "key": "財務_備註|rich_text",
+              "textContent": "={{ $json[\"財務_備註\"] }}"
+            },
+            {
+              "key": "護道會_關懷|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"護道會_關懷\"] }}"
+            },
+            {
+              "key": "護道會_約定|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"護道會_約定\"] }}"
+            },
+            {
+              "key": "護道會_備註|rich_text",
+              "textContent": "={{ $json[\"護道會_備註\"] }}"
+            },
+            {
+              "key": "志工_項目|rich_text",
+              "textContent": "={{ $json[\"志工_項目\"] }}"
+            },
+            {
+              "key": "志工_出勤|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"志工_出勤\"] }}"
+            },
+            {
+              "key": "志工_備註|rich_text",
+              "textContent": "={{ $json[\"志工_備註\"] }}"
+            },
+            {
+              "key": "來客_總數|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"來客_總數\"] }}"
+            },
+            {
+              "key": "來客_新結緣|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"來客_新結緣\"] }}"
+            },
+            {
+              "key": "來客_來源|rich_text",
+              "textContent": "={{ $json[\"來客_來源\"] }}"
+            },
+            {
+              "key": "來客_備註|rich_text",
+              "textContent": "={{ $json[\"來客_備註\"] }}"
+            },
+            {
+              "key": "活動_項目|rich_text",
+              "textContent": "={{ $json[\"活動_項目\"] }}"
+            },
+            {
+              "key": "活動_推展|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"活動_推展\"] }}"
+            },
+            {
+              "key": "活動_報名|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"活動_報名\"] }}"
+            },
+            {
+              "key": "活動_備註|rich_text",
+              "textContent": "={{ $json[\"活動_備註\"] }}"
+            },
+            {
+              "key": "修法_項目|rich_text",
+              "textContent": "={{ $json[\"修法_項目\"] }}"
+            },
+            {
+              "key": "修法_推展|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"修法_推展\"] }}"
+            },
+            {
+              "key": "修法_報名|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"修法_報名\"] }}"
+            },
+            {
+              "key": "修法_備註|rich_text",
+              "textContent": "={{ $json[\"修法_備註\"] }}"
+            },
+            {
+              "key": "平台_登入|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"平台_登入\"] }}"
+            },
+            {
+              "key": "平台_待辦|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"平台_待辦\"] }}"
+            },
+            {
+              "key": "平台_紅字|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"平台_紅字\"] }}"
+            },
+            {
+              "key": "平台_備註|rich_text",
+              "textContent": "={{ $json[\"平台_備註\"] }}"
+            },
+            {
+              "key": "法事_七天前|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"法事_七天前\"] }}"
+            },
+            {
+              "key": "法事_明天|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"法事_明天\"] }}"
+            },
+            {
+              "key": "法事_今日|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"法事_今日\"] }}"
+            },
+            {
+              "key": "法事_備註|rich_text",
+              "textContent": "={{ $json[\"法事_備註\"] }}"
+            },
+            {
+              "key": "供餐_廚師|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"供餐_廚師\"] }}"
+            },
+            {
+              "key": "供餐_預定|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"供餐_預定\"] }}"
+            },
+            {
+              "key": "供餐_實際|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"供餐_實際\"] }}"
+            },
+            {
+              "key": "供餐_備註|rich_text",
+              "textContent": "={{ $json[\"供餐_備註\"] }}"
+            },
+            {
+              "key": "經典_名稱|rich_text",
+              "textContent": "={{ $json[\"經典_名稱\"] }}"
+            },
+            {
+              "key": "經典_發送|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"經典_發送\"] }}"
+            },
+            {
+              "key": "經典_誦讀|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"經典_誦讀\"] }}"
+            },
+            {
+              "key": "經典_備註|rich_text",
+              "textContent": "={{ $json[\"經典_備註\"] }}"
+            },
+            {
+              "key": "點燈_名稱|rich_text",
+              "textContent": "={{ $json[\"點燈_名稱\"] }}"
+            },
+            {
+              "key": "點燈_人數|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"點燈_人數\"] }}"
+            },
+            {
+              "key": "點燈_修法|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"點燈_修法\"] }}"
+            },
+            {
+              "key": "點燈_備註|rich_text",
+              "textContent": "={{ $json[\"點燈_備註\"] }}"
+            },
+            {
+              "key": "生日_平台|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"生日_平台\"] }}"
+            },
+            {
+              "key": "生日_關懷|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"生日_關懷\"] }}"
+            },
+            {
+              "key": "生日_祈福|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"生日_祈福\"] }}"
+            },
+            {
+              "key": "生日_備註|rich_text",
+              "textContent": "={{ $json[\"生日_備註\"] }}"
+            },
+            {
+              "key": "公關_七天前|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"公關_七天前\"] }}"
+            },
+            {
+              "key": "公關_明日|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"公關_明日\"] }}"
+            },
+            {
+              "key": "公關_今日|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"公關_今日\"] }}"
+            },
+            {
+              "key": "公關_備註|rich_text",
+              "textContent": "={{ $json[\"公關_備註\"] }}"
+            },
+            {
+              "key": "媒體_七天前|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"媒體_七天前\"] }}"
+            },
+            {
+              "key": "媒體_明日|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"媒體_明日\"] }}"
+            },
+            {
+              "key": "媒體_今日|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"媒體_今日\"] }}"
+            },
+            {
+              "key": "媒體_備註|rich_text",
+              "textContent": "={{ $json[\"媒體_備註\"] }}"
+            },
+            {
+              "key": "數位_七天前|rich_text",
+              "textContent": "={{ $json[\"數位_七天前\"] }}"
+            },
+            {
+              "key": "數位_明日|rich_text",
+              "textContent": "={{ $json[\"數位_明日\"] }}"
+            },
+            {
+              "key": "數位_今日|rich_text",
+              "textContent": "={{ $json[\"數位_今日\"] }}"
+            },
+            {
+              "key": "數位_備註|rich_text",
+              "textContent": "={{ $json[\"數位_備註\"] }}"
+            },
+            {
+              "key": "商學院_關懷|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"商學院_關懷\"] }}"
+            },
+            {
+              "key": "商學院_報名|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"商學院_報名\"] }}"
+            },
+            {
+              "key": "商學院_約定|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"商學院_約定\"] }}"
+            },
+            {
+              "key": "商學院_備註|rich_text",
+              "textContent": "={{ $json[\"商學院_備註\"] }}"
+            },
+            {
+              "key": "五常_重點|rich_text",
+              "textContent": "={{ $json[\"五常_重點\"] }}"
+            },
+            {
+              "key": "五常_會務|rich_text",
+              "textContent": "={{ $json[\"五常_會務\"] }}"
+            },
+            {
+              "key": "五常_執行|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"五常_執行\"] }}"
+            },
+            {
+              "key": "五常_備註|rich_text",
+              "textContent": "={{ $json[\"五常_備註\"] }}"
+            },
+            {
+              "key": "醫方明_重點|rich_text",
+              "textContent": "={{ $json[\"醫方明_重點\"] }}"
+            },
+            {
+              "key": "醫方明_調護|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"醫方明_調護\"] }}"
+            },
+            {
+              "key": "醫方明_報名|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"醫方明_報名\"] }}"
+            },
+            {
+              "key": "醫方明_備註|rich_text",
+              "textContent": "={{ $json[\"醫方明_備註\"] }}"
+            },
+            {
+              "key": "修繕_三天前|rich_text",
+              "textContent": "={{ $json[\"修繕_三天前\"] }}"
+            },
+            {
+              "key": "修繕_明日|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"修繕_明日\"] }}"
+            },
+            {
+              "key": "修繕_今日|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"修繕_今日\"] }}"
+            },
+            {
+              "key": "修繕_備註|rich_text",
+              "textContent": "={{ $json[\"修繕_備註\"] }}"
+            },
+            {
+              "key": "侍神_重點|rich_text",
+              "textContent": "={{ $json[\"侍神_重點\"] }}"
+            },
+            {
+              "key": "侍神_邀請|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"侍神_邀請\"] }}"
+            },
+            {
+              "key": "侍神_參與|number",
+              "type": "number",
+              "numberValue": "={{ $json[\"侍神_參與\"] }}"
+            },
+            {
+              "key": "侍神_備註|rich_text",
+              "textContent": "={{ $json[\"侍神_備註\"] }}"
+            },
+            {
+              "key": "採購_備註|rich_text",
+              "textContent": "={{ $json[\"採購_備註\"] }}"
+            },
+            {
+              "key": "採購_內容|rich_text",
+              "textContent": "={{ $json[\"採購_內容\"] }}"
+            },
+            {
+              "key": "採購_金額|number",
+              "numberValue": "={{ $json[\"採購_金額\"] }}"
+            },
+            {
+              "key": "採購_次數|number",
+              "numberValue": "={{ $json[\"採購_次數\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Notion - 寫入每日記錄",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        496,
+        192
+      ],
+      "id": "f763c888-ccbf-428d-ba51-d484f62df248",
+      "credentials": {
+        "notionApi": {
+          "id": "I0zYECLxHQD5T26r",
+          "name": "玄門真宗"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"success\": true }",
+        "options": {}
+      },
+      "name": "回傳成功",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        816,
+        192
+      ],
+      "id": "a2d1e35b-dde1-4195-916f-8d8c13bb9a19"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "35255926-7ec9-806d-b4e9-c941034fcebc",
+          "mode": "list",
+          "cachedResultName": "工作回報人員名單",
+          "cachedResultUrl": "https://app.notion.com/p/352559267ec9806db4e9c941034fcebc"
+        },
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "key": "姓名|title",
+              "condition": "equals",
+              "titleValue": "={{ $json.properties['姓名'].title[0].plain_text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        352
+      ],
+      "id": "28ee23b6-e22d-4ea7-bba8-95cb4ce05314",
+      "name": "Get many database pages",
+      "credentials": {
+        "notionApi": {
+          "id": "I0zYECLxHQD5T26r",
+          "name": "玄門真宗"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Notion - 寫入每日記錄').item.json.id }}",
+          "mode": "id"
+        },
+        "simple": false,
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "👥 工作回報人員名單|relation",
+              "relationValue": [
+                "={{ $json.id }}"
+              ]
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        352
+      ],
+      "id": "b29d36ed-03b2-4ab5-bb60-664a92f7d186",
+      "name": "Update a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "I0zYECLxHQD5T26r",
+          "name": "玄門真宗"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// =====================================================\n// n8n Code 節點（更新版 2025-05）\n// payload 已改為平坦中文 key，直接對應 Notion 欄位名\n// =====================================================\n\nconst b = $input.first().json.body;\n\nfunction t(val) {\n  if (val === null || val === undefined) return '';\n  const s = String(val).trim();\n  return s === '—' ? '' : s;\n}\n\nreturn [{\n  json: {\n    '名稱':        b.date + ' ' + b.name,\n    '日期':        b.date,\n    '姓名':        b.name,\n\n    '預約_總數':   b['預約_總數']    ?? 0,\n    '預約_完成':   b['預約_完成']    ?? 0,\n    '預約_未到':   b['預約_未到']    ?? 0,\n    '預約_備註':   t(b['預約_備註']),\n\n    '財務_收入':   b['財務_收入']    ?? 0,\n    '財務_完成率': b['財務_完成率']  ?? 0,\n    '財務_未完成': b['財務_未完成']  ?? 0,\n    '財務_備註':   t(b['財務_備註']),\n\n    '護道會_關懷': b['護道會_關懷']  ?? 0,\n    '護道會_約定': b['護道會_約定']  ?? 0,\n    '護道會_備註': t(b['護道會_備註']),\n\n    '志工_項目':   t(b['志工_項目']),\n    '志工_出勤':   b['志工_出勤']    ?? 0,\n    '志工_備註':   t(b['志工_備註']),\n\n    '來客_總數':   b['來客_總數']    ?? 0,\n    '來客_新結緣': b['來客_新結緣']  ?? 0,\n    '來客_來源':   t(b['來客_來源']),\n    '來客_備註':   t(b['來客_備註']),\n\n    '活動_項目':   t(b['活動_項目']),\n    '活動_推展':   b['活動_推展']    ?? 0,\n    '活動_報名':   b['活動_報名']    ?? 0,\n    '活動_備註':   t(b['活動_備註']),\n\n    '修法_項目':   t(b['修法_項目']),\n    '修法_推展':   b['修法_推展']    ?? 0,\n    '修法_報名':   b['修法_報名']    ?? 0,\n    '修法_備註':   t(b['修法_備註']),\n\n    '平台_登入':   b['平台_登入']    ?? 0,\n    '平台_待辦':   b['平台_待辦']    ?? 0,\n    '平台_紅字':   b['平台_紅字']    ?? 0,\n    '平台_備註':   t(b['平台_備註']),\n\n    '法事_七天前': b['法事_七天前']  ?? 0,\n    '法事_明天':   b['法事_明天']    ?? 0,\n    '法事_今日':   b['法事_今日']    ?? 0,\n    '法事_備註':   t(b['法事_備註']),\n\n    '供餐_廚師':   b['供餐_廚師']    ?? 0,\n    '供餐_預定':   b['供餐_預定']    ?? 0,\n    '供餐_實際':   b['供餐_實際']    ?? 0,\n    '供餐_備註':   t(b['供餐_備註']),\n\n    '經典_名稱':   t(b['經典_名稱']),\n    '經典_發送':   b['經典_發送']    ?? 0,\n    '經典_誦讀':   b['經典_誦讀']    ?? 0,\n    '經典_備註':   t(b['經典_備註']),\n\n    '點燈_名稱':   t(b['點燈_名稱']),\n    '點燈_人數':   b['點燈_人數']    ?? 0,\n    '點燈_修法':   b['點燈_修法']    ?? 0,\n    '點燈_備註':   t(b['點燈_備註']),\n\n    '生日_平台':   b['生日_平台']    ?? 0,\n    '生日_關懷':   b['生日_關懷']    ?? 0,\n    '生日_祈福':   b['生日_祈福']    ?? 0,\n    '生日_備註':   t(b['生日_備註']),\n\n    '公關_七天前': b['公關_七天前']  ?? 0,\n    '公關_明日':   b['公關_明日']    ?? 0,\n    '公關_今日':   b['公關_今日']    ?? 0,\n    '公關_備註':   t(b['公關_備註']),\n\n    '媒體_七天前': b['媒體_七天前']  ?? 0,\n    '媒體_明日':   b['媒體_明日']    ?? 0,\n    '媒體_今日':   b['媒體_今日']    ?? 0,\n    '媒體_備註':   t(b['媒體_備註']),\n\n    '數位_七天前': t(b['數位_七天前']),\n    '數位_明日':   t(b['數位_明日']),\n    '數位_今日':   t(b['數位_今日']),\n    '數位_備註':   t(b['數位_備註']),\n\n    '商學院_關懷': b['商學院_關懷']  ?? 0,\n    '商學院_報名': b['商學院_報名']  ?? 0,\n    '商學院_約定': b['商學院_約定']  ?? 0,\n    '商學院_備註': t(b['商學院_備註']),\n\n    '五常_重點':   t(b['五常_重點']),\n    '五常_會務':   t(b['五常_會務']),\n    '五常_執行':   b['五常_執行']    ?? 0,\n    '五常_備註':   t(b['五常_備註']),\n\n    '醫方明_重點': t(b['醫方明_重點']),\n    '醫方明_調護': b['醫方明_調護']  ?? 0,\n    '醫方明_報名': b['醫方明_報名']  ?? 0,\n    '醫方明_備註': t(b['醫方明_備註']),\n\n    '修繕_三天前': t(b['修繕_三天前']),\n    '修繕_明日':   b['修繕_明日']    ?? 0,\n    '修繕_今日':   b['修繕_今日']    ?? 0,\n    '修繕_備註':   t(b['修繕_備註']),\n\n    '侍神_重點':   t(b['侍神_重點']),\n    '侍神_邀請':   b['侍神_邀請']    ?? 0,\n    '侍神_參與':   b['侍神_參與']    ?? 0,\n    '侍神_備註':   t(b['侍神_備註']),\n    \n    '採購_內容': t(b['採購_內容']),\n    '採購_金額': b['採購_金額'] ?? 0,\n    '採購_次數': b['採購_次數'] ?? 0,\n    '採購_備註': t(b['採購_備註']),\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        192
+      ],
+      "id": "37eb9577-b2f9-4211-a9d6-267c317ba8d2",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.line.me/v2/bot/message/push",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer  BK5Bfb7YzeDFMzc4k8h3V1PAQWYd1Ij/PIPY5Njn37Fw03UQMpNqlqfcl2zX9uggRdzFuWJLDTmDfO2CT615XpCoL/ag/thmJ8E+t+Zs5XJvU3MNRfLb2qpWELUHpPthb8BH0lS1tiwmwvr8zWB9XgdB04t89/1O/w1cDnyilFU="
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ \"to\": \"C027ae0ccdf7396e4fefe8668d1bce45a\", \"messages\": [{ \"type\": \"text\", \"text\": $json.message }] }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        688,
+        464
+      ],
+      "id": "11d7d59c-566b-4e6f-b52a-626fe68fbe88",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\n\nconst groups = {\n  '【①預約】':  ['預約_總數','預約_完成','預約_未到','預約_備註'],\n  '【②財務】':  ['財務_收入','財務_完成率','財務_未完成','財務_備註'],\n  '【③護道會】':['護道會_關懷','護道會_約定','護道會_備註'],\n  '【④志工】':  ['志工_項目','志工_出勤','志工_備註'],\n  '【⑤來客】':  ['來客_總數','來客_新結緣','來客_來源','來客_備註'],\n  '【⑥活動】':  ['活動_項目','活動_推展','活動_報名','活動_備註'],\n  '【⑦修法】':  ['修法_項目','修法_推展','修法_報名','修法_備註'],\n  '【⑧平台】':  ['平台_登入','平台_待辦','平台_紅字','平台_備註'],\n  '【⑨法事】':  ['法事_七天前','法事_明天','法事_今日','法事_備註'],\n  '【⑩供餐】':  ['供餐_廚師','供餐_預定','供餐_實際','供餐_備註'],\n  '【⑪經典】':  ['經典_名稱','經典_發送','經典_誦讀','經典_備註'],\n  '【⑫點燈】':  ['點燈_名稱','點燈_人數','點燈_修法','點燈_備註'],\n  '【⑬生日】':  ['生日_平台','生日_關懷','生日_祈福','生日_備註'],\n  '【⑭公關】':  ['公關_七天前','公關_明日','公關_今日','公關_備註'],\n  '【⑮媒體】':  ['媒體_七天前','媒體_明日','媒體_今日','媒體_備註'],\n  '【⑯數位】':  ['數位_七天前','數位_明日','數位_今日','數位_備註'],\n  '【⑰商學院】':['商學院_關懷','商學院_報名','商學院_約定','商學院_備註'],\n  '【⑱五常】':  ['五常_重點','五常_會務','五常_執行','五常_備註'],\n  '【⑲醫方明】':['醫方明_重點','醫方明_調護','醫方明_報名','醫方明_備註'],\n  '【⑳修繕】':  ['修繕_三天前','修繕_明日','修繕_今日','修繕_備註'],\n  '【㉑侍神】':  ['侍神_重點','侍神_邀請','侍神_參與','侍神_備註'],\n  '【㉒採購】': ['採購_內容','採購_金額','採購_次數','採購_備註'],\n};\n\nlet lines = [];\nlines.push( data['姓名'] + ' 每日工作記錄｜' + data['日期']);\nlines.push('═══════');\n\nfor (const [groupName, keys] of Object.entries(groups)) {\n  const groupLines = [];\n  for (const key of keys) {\n    const val = data[key];\n    if (val === 0 || val === '' || val === null || val === undefined) continue;\n    const label = key.includes('_') ? key.split('_')[1] : key;\n    groupLines.push(`  ${label}：${val}`);\n  }\n  if (groupLines.length > 0) {\n    lines.push(groupName);\n    lines.push(...groupLines);\n  }\n}\n\nlines.push('═══════');\nreturn [{ json: { message: lines.join('\\n') } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        368
+      ],
+      "id": "6815356c-c5b1-4f12-b6cc-8daeef5564e9",
+      "name": "line訊息整理"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion - 寫入每日記錄": {
+      "main": [
+        [
+          {
+            "node": "回傳成功",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get many database pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many database pages": {
+      "main": [
+        [
+          {
+            "node": "Update a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Notion - 寫入每日記錄",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "line訊息整理",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "line訊息整理": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "notionton8n.zeabur.app",
+            "user-agent": "Mozilla/5.0 (compatible; Google-Apps-Script; beanserver; +https://script.google.com; id: UAEmdDd84lQZxrTty0gBCznH5P0uXYYSZLw)",
+            "content-length": "1789",
+            "accept-encoding": "gzip, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "2401:e180:8870:d93b:e502:eef5:5f29:b195, 35.187.134.161",
+            "x-forwarded-host": "notionton8n.zeabur.app",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-zeabur-ip-country": "US"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "預約_未到": 0,
+            "預約_備註": "—",
+            "數位_備註": "—",
+            "供餐_備註": "—",
+            "五常_會務": "—",
+            "經典_備註": "—",
+            "活動_推展": 0,
+            "來客_總數": 0,
+            "醫方明_報名": 0,
+            "預約_總數": 0,
+            "志工_項目": "—",
+            "志工_備註": "—",
+            "法事_今日": 0,
+            "來客_備註": "—",
+            "法事_明天": 0,
+            "媒體_明日": 0,
+            "公關_七天前": 0,
+            "供餐_廚師": 0,
+            "財務_未完成": 0,
+            "經典_發送": 0,
+            "來客_來源": "—",
+            "生日_祈福": 0,
+            "供餐_實際": 0,
+            "財務_完成率": 0,
+            "公關_今日": 0,
+            "志工_出勤": 0,
+            "平台_登入": 0,
+            "生日_備註": "—",
+            "採購_內容": "3",
+            "商學院_備註": "—",
+            "供餐_預定": 0,
+            "修繕_備註": "—",
+            "來客_新結緣": 0,
+            "財務_收入": 0,
+            "醫方明_重點": "—",
+            "修繕_三天前": "—",
+            "點燈_名稱": "—",
+            "生日_關懷": 0,
+            "數位_七天前": "—",
+            "醫方明_備註": "—",
+            "數位_明日": "—",
+            "平台_備註": "—",
+            "公關_明日": 0,
+            "修法_推展": 0,
+            "護道會_備註": "—",
+            "侍神_重點": "—",
+            "點燈_修法": 0,
+            "五常_重點": "—",
+            "商學院_約定": 0,
+            "活動_備註": "—",
+            "媒體_備註": "—",
+            "數位_今日": "—",
+            "護道會_約定": 0,
+            "侍神_備註": "—",
+            "經典_誦讀": 0,
+            "修繕_今日": 0,
+            "財務_備註": "—",
+            "醫方明_調護": 0,
+            "媒體_七天前": 0,
+            "商學院_關懷": 0,
+            "修法_備註": "—",
+            "點燈_人數": 0,
+            "經典_名稱": "—",
+            "活動_項目": "—",
+            "活動_報名": 0,
+            "採購_金額": 3,
+            "修法_項目": "—",
+            "修繕_明日": 0,
+            "侍神_參與": 0,
+            "公關_備註": "—",
+            "護道會_關懷": 0,
+            "生日_平台": 0,
+            "採購_備註": "3",
+            "媒體_今日": 0,
+            "平台_待辦": 0,
+            "法事_七天前": 0,
+            "五常_備註": "—",
+            "點燈_備註": "—",
+            "預約_完成": 0,
+            "法事_備註": "—",
+            "平台_紅字": 0,
+            "採購_次數": 3,
+            "商學院_報名": 0,
+            "date": "2026-05-11",
+            "name": "林韋銘",
+            "侍神_邀請": 0,
+            "修法_報名": 0,
+            "五常_執行": 0
+          },
+          "webhookUrl": "https://notionton8n.zeabur.app/webhook/daily-report-V2",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "b0a07045-e819-40e1-a196-450f2192eef6",
+  "activeVersionId": "b0a07045-e819-40e1-a196-450f2192eef6",
+  "versionCounter": 24,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-05-10T13:40:01.257Z",
+      "createdAt": "2026-05-10T13:40:01.257Z",
+      "role": "workflow:owner",
+      "workflowId": "F6CdOwiWfsnFfcMz",
+      "projectId": "CJEzaYFffDb6dVsb",
+      "project": {
+        "updatedAt": "2025-06-20T12:51:16.414Z",
+        "createdAt": "2025-06-20T12:40:37.511Z",
+        "id": "CJEzaYFffDb6dVsb",
+        "name": "林 韋銘 <andesnice@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-06-20T12:40:37.511Z",
+            "createdAt": "2025-06-20T12:40:37.511Z",
+            "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+            "projectId": "CJEzaYFffDb6dVsb",
+            "user": {
+              "updatedAt": "2026-05-31T18:00:00.108Z",
+              "createdAt": "2025-06-20T12:40:30.608Z",
+              "id": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+              "email": "andesnice@gmail.com",
+              "firstName": "林",
+              "lastName": "韋銘",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "firstSuccessfulWorkflowId": "UhnBmWygF2WPjB8v",
+                "userActivatedAt": 1750476523969,
+                "easyAIWorkflowOnboarded": true
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-05-31",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-05-13T11:43:48.427Z",
+    "createdAt": "2026-05-13T11:43:46.444Z",
+    "versionId": "b0a07045-e819-40e1-a196-450f2192eef6",
+    "workflowId": "F6CdOwiWfsnFfcMz",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "daily-report-V2",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [
+          -64,
+          192
+        ],
+        "id": "866694bf-09a9-486b-a52d-edd531189616",
+        "webhookId": "fb6705a4-2a85-4cad-9f4b-743012768b1c"
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "databaseId": {
+            "__rl": true,
+            "value": "27da46648c034bd798e785f6c1c98c34",
+            "mode": "id"
+          },
+          "title": "={{ $json[\"姓名\"] }}",
+          "simple": false,
+          "propertiesUi": {
+            "propertyValues": [
+              {
+                "key": "日期|date",
+                "type": "date",
+                "includeTime": false,
+                "date": "={{ $json[\"日期\"] }}"
+              },
+              {
+                "key": "預約_總數|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"預約_總數\"] }}"
+              },
+              {
+                "key": "預約_完成|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"預約_完成\"] }}"
+              },
+              {
+                "key": "預約_未到|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"預約_未到\"] }}"
+              },
+              {
+                "key": "預約_備註|rich_text",
+                "textContent": "={{ $json[\"預約_備註\"] }}"
+              },
+              {
+                "key": "財務_收入|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"財務_收入\"] }}"
+              },
+              {
+                "key": "財務_完成率|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"財務_完成率\"] }}"
+              },
+              {
+                "key": "財務_未完成|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"財務_未完成\"] }}"
+              },
+              {
+                "key": "財務_備註|rich_text",
+                "textContent": "={{ $json[\"財務_備註\"] }}"
+              },
+              {
+                "key": "護道會_關懷|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"護道會_關懷\"] }}"
+              },
+              {
+                "key": "護道會_約定|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"護道會_約定\"] }}"
+              },
+              {
+                "key": "護道會_備註|rich_text",
+                "textContent": "={{ $json[\"護道會_備註\"] }}"
+              },
+              {
+                "key": "志工_項目|rich_text",
+                "textContent": "={{ $json[\"志工_項目\"] }}"
+              },
+              {
+                "key": "志工_出勤|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"志工_出勤\"] }}"
+              },
+              {
+                "key": "志工_備註|rich_text",
+                "textContent": "={{ $json[\"志工_備註\"] }}"
+              },
+              {
+                "key": "來客_總數|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"來客_總數\"] }}"
+              },
+              {
+                "key": "來客_新結緣|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"來客_新結緣\"] }}"
+              },
+              {
+                "key": "來客_來源|rich_text",
+                "textContent": "={{ $json[\"來客_來源\"] }}"
+              },
+              {
+                "key": "來客_備註|rich_text",
+                "textContent": "={{ $json[\"來客_備註\"] }}"
+              },
+              {
+                "key": "活動_項目|rich_text",
+                "textContent": "={{ $json[\"活動_項目\"] }}"
+              },
+              {
+                "key": "活動_推展|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"活動_推展\"] }}"
+              },
+              {
+                "key": "活動_報名|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"活動_報名\"] }}"
+              },
+              {
+                "key": "活動_備註|rich_text",
+                "textContent": "={{ $json[\"活動_備註\"] }}"
+              },
+              {
+                "key": "修法_項目|rich_text",
+                "textContent": "={{ $json[\"修法_項目\"] }}"
+              },
+              {
+                "key": "修法_推展|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"修法_推展\"] }}"
+              },
+              {
+                "key": "修法_報名|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"修法_報名\"] }}"
+              },
+              {
+                "key": "修法_備註|rich_text",
+                "textContent": "={{ $json[\"修法_備註\"] }}"
+              },
+              {
+                "key": "平台_登入|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"平台_登入\"] }}"
+              },
+              {
+                "key": "平台_待辦|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"平台_待辦\"] }}"
+              },
+              {
+                "key": "平台_紅字|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"平台_紅字\"] }}"
+              },
+              {
+                "key": "平台_備註|rich_text",
+                "textContent": "={{ $json[\"平台_備註\"] }}"
+              },
+              {
+                "key": "法事_七天前|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"法事_七天前\"] }}"
+              },
+              {
+                "key": "法事_明天|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"法事_明天\"] }}"
+              },
+              {
+                "key": "法事_今日|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"法事_今日\"] }}"
+              },
+              {
+                "key": "法事_備註|rich_text",
+                "textContent": "={{ $json[\"法事_備註\"] }}"
+              },
+              {
+                "key": "供餐_廚師|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"供餐_廚師\"] }}"
+              },
+              {
+                "key": "供餐_預定|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"供餐_預定\"] }}"
+              },
+              {
+                "key": "供餐_實際|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"供餐_實際\"] }}"
+              },
+              {
+                "key": "供餐_備註|rich_text",
+                "textContent": "={{ $json[\"供餐_備註\"] }}"
+              },
+              {
+                "key": "經典_名稱|rich_text",
+                "textContent": "={{ $json[\"經典_名稱\"] }}"
+              },
+              {
+                "key": "經典_發送|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"經典_發送\"] }}"
+              },
+              {
+                "key": "經典_誦讀|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"經典_誦讀\"] }}"
+              },
+              {
+                "key": "經典_備註|rich_text",
+                "textContent": "={{ $json[\"經典_備註\"] }}"
+              },
+              {
+                "key": "點燈_名稱|rich_text",
+                "textContent": "={{ $json[\"點燈_名稱\"] }}"
+              },
+              {
+                "key": "點燈_人數|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"點燈_人數\"] }}"
+              },
+              {
+                "key": "點燈_修法|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"點燈_修法\"] }}"
+              },
+              {
+                "key": "點燈_備註|rich_text",
+                "textContent": "={{ $json[\"點燈_備註\"] }}"
+              },
+              {
+                "key": "生日_平台|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"生日_平台\"] }}"
+              },
+              {
+                "key": "生日_關懷|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"生日_關懷\"] }}"
+              },
+              {
+                "key": "生日_祈福|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"生日_祈福\"] }}"
+              },
+              {
+                "key": "生日_備註|rich_text",
+                "textContent": "={{ $json[\"生日_備註\"] }}"
+              },
+              {
+                "key": "公關_七天前|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"公關_七天前\"] }}"
+              },
+              {
+                "key": "公關_明日|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"公關_明日\"] }}"
+              },
+              {
+                "key": "公關_今日|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"公關_今日\"] }}"
+              },
+              {
+                "key": "公關_備註|rich_text",
+                "textContent": "={{ $json[\"公關_備註\"] }}"
+              },
+              {
+                "key": "媒體_七天前|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"媒體_七天前\"] }}"
+              },
+              {
+                "key": "媒體_明日|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"媒體_明日\"] }}"
+              },
+              {
+                "key": "媒體_今日|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"媒體_今日\"] }}"
+              },
+              {
+                "key": "媒體_備註|rich_text",
+                "textContent": "={{ $json[\"媒體_備註\"] }}"
+              },
+              {
+                "key": "數位_七天前|rich_text",
+                "textContent": "={{ $json[\"數位_七天前\"] }}"
+              },
+              {
+                "key": "數位_明日|rich_text",
+                "textContent": "={{ $json[\"數位_明日\"] }}"
+              },
+              {
+                "key": "數位_今日|rich_text",
+                "textContent": "={{ $json[\"數位_今日\"] }}"
+              },
+              {
+                "key": "數位_備註|rich_text",
+                "textContent": "={{ $json[\"數位_備註\"] }}"
+              },
+              {
+                "key": "商學院_關懷|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"商學院_關懷\"] }}"
+              },
+              {
+                "key": "商學院_報名|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"商學院_報名\"] }}"
+              },
+              {
+                "key": "商學院_約定|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"商學院_約定\"] }}"
+              },
+              {
+                "key": "商學院_備註|rich_text",
+                "textContent": "={{ $json[\"商學院_備註\"] }}"
+              },
+              {
+                "key": "五常_重點|rich_text",
+                "textContent": "={{ $json[\"五常_重點\"] }}"
+              },
+              {
+                "key": "五常_會務|rich_text",
+                "textContent": "={{ $json[\"五常_會務\"] }}"
+              },
+              {
+                "key": "五常_執行|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"五常_執行\"] }}"
+              },
+              {
+                "key": "五常_備註|rich_text",
+                "textContent": "={{ $json[\"五常_備註\"] }}"
+              },
+              {
+                "key": "醫方明_重點|rich_text",
+                "textContent": "={{ $json[\"醫方明_重點\"] }}"
+              },
+              {
+                "key": "醫方明_調護|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"醫方明_調護\"] }}"
+              },
+              {
+                "key": "醫方明_報名|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"醫方明_報名\"] }}"
+              },
+              {
+                "key": "醫方明_備註|rich_text",
+                "textContent": "={{ $json[\"醫方明_備註\"] }}"
+              },
+              {
+                "key": "修繕_三天前|rich_text",
+                "textContent": "={{ $json[\"修繕_三天前\"] }}"
+              },
+              {
+                "key": "修繕_明日|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"修繕_明日\"] }}"
+              },
+              {
+                "key": "修繕_今日|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"修繕_今日\"] }}"
+              },
+              {
+                "key": "修繕_備註|rich_text",
+                "textContent": "={{ $json[\"修繕_備註\"] }}"
+              },
+              {
+                "key": "侍神_重點|rich_text",
+                "textContent": "={{ $json[\"侍神_重點\"] }}"
+              },
+              {
+                "key": "侍神_邀請|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"侍神_邀請\"] }}"
+              },
+              {
+                "key": "侍神_參與|number",
+                "type": "number",
+                "numberValue": "={{ $json[\"侍神_參與\"] }}"
+              },
+              {
+                "key": "侍神_備註|rich_text",
+                "textContent": "={{ $json[\"侍神_備註\"] }}"
+              },
+              {
+                "key": "採購_備註|rich_text",
+                "textContent": "={{ $json[\"採購_備註\"] }}"
+              },
+              {
+                "key": "採購_內容|rich_text",
+                "textContent": "={{ $json[\"採購_內容\"] }}"
+              },
+              {
+                "key": "採購_金額|number",
+                "numberValue": "={{ $json[\"採購_金額\"] }}"
+              },
+              {
+                "key": "採購_次數|number",
+                "numberValue": "={{ $json[\"採購_次數\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "name": "Notion - 寫入每日記錄",
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2,
+        "position": [
+          496,
+          192
+        ],
+        "id": "f763c888-ccbf-428d-ba51-d484f62df248",
+        "credentials": {
+          "notionApi": {
+            "id": "I0zYECLxHQD5T26r",
+            "name": "玄門真宗"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={ \"success\": true }",
+          "options": {}
+        },
+        "name": "回傳成功",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          816,
+          192
+        ],
+        "id": "a2d1e35b-dde1-4195-916f-8d8c13bb9a19"
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "getAll",
+          "databaseId": {
+            "__rl": true,
+            "value": "35255926-7ec9-806d-b4e9-c941034fcebc",
+            "mode": "list",
+            "cachedResultName": "工作回報人員名單",
+            "cachedResultUrl": "https://app.notion.com/p/352559267ec9806db4e9c941034fcebc"
+          },
+          "filterType": "manual",
+          "filters": {
+            "conditions": [
+              {
+                "key": "姓名|title",
+                "condition": "equals",
+                "titleValue": "={{ $json.properties['姓名'].title[0].plain_text }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          832,
+          352
+        ],
+        "id": "28ee23b6-e22d-4ea7-bba8-95cb4ce05314",
+        "name": "Get many database pages",
+        "credentials": {
+          "notionApi": {
+            "id": "I0zYECLxHQD5T26r",
+            "name": "玄門真宗"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "update",
+          "pageId": {
+            "__rl": true,
+            "value": "={{ $('Notion - 寫入每日記錄').item.json.id }}",
+            "mode": "id"
+          },
+          "simple": false,
+          "propertiesUi": {
+            "propertyValues": [
+              {
+                "key": "👥 工作回報人員名單|relation",
+                "relationValue": [
+                  "={{ $json.id }}"
+                ]
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          1040,
+          352
+        ],
+        "id": "b29d36ed-03b2-4ab5-bb60-664a92f7d186",
+        "name": "Update a database page",
+        "credentials": {
+          "notionApi": {
+            "id": "I0zYECLxHQD5T26r",
+            "name": "玄門真宗"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// =====================================================\n// n8n Code 節點（更新版 2025-05）\n// payload 已改為平坦中文 key，直接對應 Notion 欄位名\n// =====================================================\n\nconst b = $input.first().json.body;\n\nfunction t(val) {\n  if (val === null || val === undefined) return '';\n  const s = String(val).trim();\n  return s === '—' ? '' : s;\n}\n\nreturn [{\n  json: {\n    '名稱':        b.date + ' ' + b.name,\n    '日期':        b.date,\n    '姓名':        b.name,\n\n    '預約_總數':   b['預約_總數']    ?? 0,\n    '預約_完成':   b['預約_完成']    ?? 0,\n    '預約_未到':   b['預約_未到']    ?? 0,\n    '預約_備註':   t(b['預約_備註']),\n\n    '財務_收入':   b['財務_收入']    ?? 0,\n    '財務_完成率': b['財務_完成率']  ?? 0,\n    '財務_未完成': b['財務_未完成']  ?? 0,\n    '財務_備註':   t(b['財務_備註']),\n\n    '護道會_關懷': b['護道會_關懷']  ?? 0,\n    '護道會_約定': b['護道會_約定']  ?? 0,\n    '護道會_備註': t(b['護道會_備註']),\n\n    '志工_項目':   t(b['志工_項目']),\n    '志工_出勤':   b['志工_出勤']    ?? 0,\n    '志工_備註':   t(b['志工_備註']),\n\n    '來客_總數':   b['來客_總數']    ?? 0,\n    '來客_新結緣': b['來客_新結緣']  ?? 0,\n    '來客_來源':   t(b['來客_來源']),\n    '來客_備註':   t(b['來客_備註']),\n\n    '活動_項目':   t(b['活動_項目']),\n    '活動_推展':   b['活動_推展']    ?? 0,\n    '活動_報名':   b['活動_報名']    ?? 0,\n    '活動_備註':   t(b['活動_備註']),\n\n    '修法_項目':   t(b['修法_項目']),\n    '修法_推展':   b['修法_推展']    ?? 0,\n    '修法_報名':   b['修法_報名']    ?? 0,\n    '修法_備註':   t(b['修法_備註']),\n\n    '平台_登入':   b['平台_登入']    ?? 0,\n    '平台_待辦':   b['平台_待辦']    ?? 0,\n    '平台_紅字':   b['平台_紅字']    ?? 0,\n    '平台_備註':   t(b['平台_備註']),\n\n    '法事_七天前': b['法事_七天前']  ?? 0,\n    '法事_明天':   b['法事_明天']    ?? 0,\n    '法事_今日':   b['法事_今日']    ?? 0,\n    '法事_備註':   t(b['法事_備註']),\n\n    '供餐_廚師':   b['供餐_廚師']    ?? 0,\n    '供餐_預定':   b['供餐_預定']    ?? 0,\n    '供餐_實際':   b['供餐_實際']    ?? 0,\n    '供餐_備註':   t(b['供餐_備註']),\n\n    '經典_名稱':   t(b['經典_名稱']),\n    '經典_發送':   b['經典_發送']    ?? 0,\n    '經典_誦讀':   b['經典_誦讀']    ?? 0,\n    '經典_備註':   t(b['經典_備註']),\n\n    '點燈_名稱':   t(b['點燈_名稱']),\n    '點燈_人數':   b['點燈_人數']    ?? 0,\n    '點燈_修法':   b['點燈_修法']    ?? 0,\n    '點燈_備註':   t(b['點燈_備註']),\n\n    '生日_平台':   b['生日_平台']    ?? 0,\n    '生日_關懷':   b['生日_關懷']    ?? 0,\n    '生日_祈福':   b['生日_祈福']    ?? 0,\n    '生日_備註':   t(b['生日_備註']),\n\n    '公關_七天前': b['公關_七天前']  ?? 0,\n    '公關_明日':   b['公關_明日']    ?? 0,\n    '公關_今日':   b['公關_今日']    ?? 0,\n    '公關_備註':   t(b['公關_備註']),\n\n    '媒體_七天前': b['媒體_七天前']  ?? 0,\n    '媒體_明日':   b['媒體_明日']    ?? 0,\n    '媒體_今日':   b['媒體_今日']    ?? 0,\n    '媒體_備註':   t(b['媒體_備註']),\n\n    '數位_七天前': t(b['數位_七天前']),\n    '數位_明日':   t(b['數位_明日']),\n    '數位_今日':   t(b['數位_今日']),\n    '數位_備註':   t(b['數位_備註']),\n\n    '商學院_關懷': b['商學院_關懷']  ?? 0,\n    '商學院_報名': b['商學院_報名']  ?? 0,\n    '商學院_約定': b['商學院_約定']  ?? 0,\n    '商學院_備註': t(b['商學院_備註']),\n\n    '五常_重點':   t(b['五常_重點']),\n    '五常_會務':   t(b['五常_會務']),\n    '五常_執行':   b['五常_執行']    ?? 0,\n    '五常_備註':   t(b['五常_備註']),\n\n    '醫方明_重點': t(b['醫方明_重點']),\n    '醫方明_調護': b['醫方明_調護']  ?? 0,\n    '醫方明_報名': b['醫方明_報名']  ?? 0,\n    '醫方明_備註': t(b['醫方明_備註']),\n\n    '修繕_三天前': t(b['修繕_三天前']),\n    '修繕_明日':   b['修繕_明日']    ?? 0,\n    '修繕_今日':   b['修繕_今日']    ?? 0,\n    '修繕_備註':   t(b['修繕_備註']),\n\n    '侍神_重點':   t(b['侍神_重點']),\n    '侍神_邀請':   b['侍神_邀請']    ?? 0,\n    '侍神_參與':   b['侍神_參與']    ?? 0,\n    '侍神_備註':   t(b['侍神_備註']),\n    \n    '採購_內容': t(b['採購_內容']),\n    '採購_金額': b['採購_金額'] ?? 0,\n    '採購_次數': b['採購_次數'] ?? 0,\n    '採購_備註': t(b['採購_備註']),\n  }\n}];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          144,
+          192
+        ],
+        "id": "37eb9577-b2f9-4211-a9d6-267c317ba8d2",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.line.me/v2/bot/message/push",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer  BK5Bfb7YzeDFMzc4k8h3V1PAQWYd1Ij/PIPY5Njn37Fw03UQMpNqlqfcl2zX9uggRdzFuWJLDTmDfO2CT615XpCoL/ag/thmJ8E+t+Zs5XJvU3MNRfLb2qpWELUHpPthb8BH0lS1tiwmwvr8zWB9XgdB04t89/1O/w1cDnyilFU="
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ \"to\": \"C027ae0ccdf7396e4fefe8668d1bce45a\", \"messages\": [{ \"type\": \"text\", \"text\": $json.message }] }) }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          688,
+          464
+        ],
+        "id": "11d7d59c-566b-4e6f-b52a-626fe68fbe88",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "jsCode": "const data = $input.first().json;\n\nconst groups = {\n  '【①預約】':  ['預約_總數','預約_完成','預約_未到','預約_備註'],\n  '【②財務】':  ['財務_收入','財務_完成率','財務_未完成','財務_備註'],\n  '【③護道會】':['護道會_關懷','護道會_約定','護道會_備註'],\n  '【④志工】':  ['志工_項目','志工_出勤','志工_備註'],\n  '【⑤來客】':  ['來客_總數','來客_新結緣','來客_來源','來客_備註'],\n  '【⑥活動】':  ['活動_項目','活動_推展','活動_報名','活動_備註'],\n  '【⑦修法】':  ['修法_項目','修法_推展','修法_報名','修法_備註'],\n  '【⑧平台】':  ['平台_登入','平台_待辦','平台_紅字','平台_備註'],\n  '【⑨法事】':  ['法事_七天前','法事_明天','法事_今日','法事_備註'],\n  '【⑩供餐】':  ['供餐_廚師','供餐_預定','供餐_實際','供餐_備註'],\n  '【⑪經典】':  ['經典_名稱','經典_發送','經典_誦讀','經典_備註'],\n  '【⑫點燈】':  ['點燈_名稱','點燈_人數','點燈_修法','點燈_備註'],\n  '【⑬生日】':  ['生日_平台','生日_關懷','生日_祈福','生日_備註'],\n  '【⑭公關】':  ['公關_七天前','公關_明日','公關_今日','公關_備註'],\n  '【⑮媒體】':  ['媒體_七天前','媒體_明日','媒體_今日','媒體_備註'],\n  '【⑯數位】':  ['數位_七天前','數位_明日','數位_今日','數位_備註'],\n  '【⑰商學院】':['商學院_關懷','商學院_報名','商學院_約定','商學院_備註'],\n  '【⑱五常】':  ['五常_重點','五常_會務','五常_執行','五常_備註'],\n  '【⑲醫方明】':['醫方明_重點','醫方明_調護','醫方明_報名','醫方明_備註'],\n  '【⑳修繕】':  ['修繕_三天前','修繕_明日','修繕_今日','修繕_備註'],\n  '【㉑侍神】':  ['侍神_重點','侍神_邀請','侍神_參與','侍神_備註'],\n  '【㉒採購】': ['採購_內容','採購_金額','採購_次數','採購_備註'],\n};\n\nlet lines = [];\nlines.push( data['姓名'] + ' 每日工作記錄｜' + data['日期']);\nlines.push('═══════');\n\nfor (const [groupName, keys] of Object.entries(groups)) {\n  const groupLines = [];\n  for (const key of keys) {\n    const val = data[key];\n    if (val === 0 || val === '' || val === null || val === undefined) continue;\n    const label = key.includes('_') ? key.split('_')[1] : key;\n    groupLines.push(`  ${label}：${val}`);\n  }\n  if (groupLines.length > 0) {\n    lines.push(groupName);\n    lines.push(...groupLines);\n  }\n}\n\nlines.push('═══════');\nreturn [{ json: { message: lines.join('\\n') } }];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          400,
+          368
+        ],
+        "id": "6815356c-c5b1-4f12-b6cc-8daeef5564e9",
+        "name": "line訊息整理"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notion - 寫入每日記錄": {
+        "main": [
+          [
+            {
+              "node": "回傳成功",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Get many database pages",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many database pages": {
+        "main": [
+          [
+            {
+              "node": "Update a database page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Notion - 寫入每日記錄",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "line訊息整理",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "line訊息整理": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "林 韋銘",
+    "name": "Version b0a07045",
+    "description": "",
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-05-13T11:43:48.414Z",
+        "id": 1248,
+        "workflowId": "F6CdOwiWfsnFfcMz",
+        "versionId": "b0a07045-e819-40e1-a196-450f2192eef6",
+        "event": "activated",
+        "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a"
+      }
+    ]
+  }
+}
