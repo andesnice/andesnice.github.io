@@ -1,0 +1,560 @@
+{
+  "updatedAt": "2026-04-20T03:47:14.842Z",
+  "createdAt": "2025-11-27T03:46:46.287Z",
+  "id": "7LXeqTvTZH07GiX3",
+  "name": "29.醫方明講師同步notion",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1FCEKhOFuNRrsc0zLODeh_U6FfdvyH0WaLEVdOC-0vko",
+          "mode": "list",
+          "cachedResultName": "醫方明講師報名表 (回覆)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FCEKhOFuNRrsc0zLODeh_U6FfdvyH0WaLEVdOC-0vko/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1938151272,
+          "mode": "list",
+          "cachedResultName": "表單回應 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FCEKhOFuNRrsc0zLODeh_U6FfdvyH0WaLEVdOC-0vko/edit#gid=1938151272"
+        },
+        "event": "rowAdded",
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRange",
+              "firstDataRow": 77
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -688,
+        -64
+      ],
+      "id": "a9969754-2525-4083-9b2b-9f025ad520a8",
+      "name": "Google Sheets Trigger",
+      "retryOnFail": false,
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "EuppLVYwRfc4Zc7O",
+          "name": "Google Sheets Trigger account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "24455926-7ec9-80a6-bd12-c657decac827",
+          "mode": "list",
+          "cachedResultName": "調護",
+          "cachedResultUrl": "https://www.notion.so/244559267ec980a6bd12c657decac827"
+        },
+        "title": "={{ $('Google Sheets Trigger').item.json['姓名'] }}",
+        "simple": false,
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "地點|select",
+              "selectValue": "={{ $('Google Sheets Trigger').item.json['地點'] }}"
+            },
+            {
+              "key": "電話|phone_number",
+              "phoneValue": "={{\n  $('Google Sheets Trigger').item.json[\"電話\"] || null\n}}"
+            },
+            {
+              "key": "活動|multi_select",
+              "multiSelectValue": "={{ $json.full }}"
+            },
+            {
+              "key": "身份|select",
+              "selectValue": "講師"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        -64
+      ],
+      "id": "74242866-a632-438e-92b9-f9953dbaf60c",
+      "name": "Create a database page",
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "I0zYECLxHQD5T26r",
+          "name": "玄門真宗"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 讀取 Set node 的文字\nconst inputText = $json.text;\n\n// 以逗號分割\nconst parts = inputText.split(',').map(p => p.trim());\n\n// 將每一段資料拆日期與事件\nconst results = parts.map(item => {\n  const date = item.slice(0, 5);      // 前五碼：日期\n  const event = item.slice(5).trim(); // 後面：事件內容\n\n  // 合併成你想要的格式\n  const full = `${date}${event}`;\n\n  return {\n    json: {\n      full     // 只輸出一個欄位 full\n    }\n  };\n});\n\n// 回傳多筆 item\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        96,
+        -64
+      ],
+      "id": "8d349d8c-02ba-4939-936f-375d0f90b413",
+      "name": "Code in JavaScript2",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b4d92db1-6ac1-4d0d-8ffe-0cfad74e745f",
+              "name": "text",
+              "value": "=\n{{\n$json[\"活動for禪院\"] ||\n$json[\"活動for玄儒\"] ||\n$json[\"活動for玄智\"] ||\n$json[\"活動for聖道\"] ||\n$json[\"活動for山門\"] ||\n$json[\"活動for玄義\"]\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -176,
+        -64
+      ],
+      "id": "df29dca0-e7ef-4b99-b431-0169cafb33f0",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -480,
+        -64
+      ],
+      "id": "6d16396f-d3cb-459e-b680-00acde951868",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        720,
+        160
+      ],
+      "id": "e32d572b-697a-45aa-a197-4b16480502f4"
+    }
+  ],
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Create a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a database page": {
+      "main": [
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Google Sheets Trigger": {
+      "documentId": "1FCEKhOFuNRrsc0zLODeh_U6FfdvyH0WaLEVdOC-0vko",
+      "sheetId": 1938151272,
+      "lastRevision": 610,
+      "lastRevisionLink": "https://docs.google.com/spreadsheets/export?id=1FCEKhOFuNRrsc0zLODeh_U6FfdvyH0WaLEVdOC-0vko&revision=610&exportFormat=xlsx",
+      "lastIndexChecked": 108
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "6e8c024f-9372-403a-a62c-3a81eb188b02",
+  "activeVersionId": "6e8c024f-9372-403a-a62c-3a81eb188b02",
+  "versionCounter": 55,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-11-27T03:46:46.287Z",
+      "createdAt": "2025-11-27T03:46:46.287Z",
+      "role": "workflow:owner",
+      "workflowId": "7LXeqTvTZH07GiX3",
+      "projectId": "CJEzaYFffDb6dVsb",
+      "project": {
+        "updatedAt": "2025-06-20T12:51:16.414Z",
+        "createdAt": "2025-06-20T12:40:37.511Z",
+        "id": "CJEzaYFffDb6dVsb",
+        "name": "林 韋銘 <andesnice@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-06-20T12:40:37.511Z",
+            "createdAt": "2025-06-20T12:40:37.511Z",
+            "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+            "projectId": "CJEzaYFffDb6dVsb",
+            "user": {
+              "updatedAt": "2026-05-31T18:00:00.108Z",
+              "createdAt": "2025-06-20T12:40:30.608Z",
+              "id": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+              "email": "andesnice@gmail.com",
+              "firstName": "林",
+              "lastName": "韋銘",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "firstSuccessfulWorkflowId": "UhnBmWygF2WPjB8v",
+                "userActivatedAt": 1750476523969,
+                "easyAIWorkflowOnboarded": true
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-05-31",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2025-12-23T07:53:08.791Z",
+    "createdAt": "2025-12-23T07:53:08.791Z",
+    "versionId": "6e8c024f-9372-403a-a62c-3a81eb188b02",
+    "workflowId": "7LXeqTvTZH07GiX3",
+    "nodes": [
+      {
+        "parameters": {
+          "pollTimes": {
+            "item": [
+              {
+                "mode": "everyMinute"
+              }
+            ]
+          },
+          "documentId": {
+            "__rl": true,
+            "value": "1FCEKhOFuNRrsc0zLODeh_U6FfdvyH0WaLEVdOC-0vko",
+            "mode": "list",
+            "cachedResultName": "醫方明講師報名表 (回覆)",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FCEKhOFuNRrsc0zLODeh_U6FfdvyH0WaLEVdOC-0vko/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 1938151272,
+            "mode": "list",
+            "cachedResultName": "表單回應 1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FCEKhOFuNRrsc0zLODeh_U6FfdvyH0WaLEVdOC-0vko/edit#gid=1938151272"
+          },
+          "event": "rowAdded",
+          "options": {
+            "dataLocationOnSheet": {
+              "values": {
+                "rangeDefinition": "specifyRange",
+                "firstDataRow": 77
+              }
+            }
+          }
+        },
+        "type": "n8n-nodes-base.googleSheetsTrigger",
+        "typeVersion": 1,
+        "position": [
+          -688,
+          -64
+        ],
+        "id": "a9969754-2525-4083-9b2b-9f025ad520a8",
+        "name": "Google Sheets Trigger",
+        "retryOnFail": false,
+        "alwaysOutputData": false,
+        "credentials": {
+          "googleSheetsTriggerOAuth2Api": {
+            "id": "EuppLVYwRfc4Zc7O",
+            "name": "Google Sheets Trigger account 2"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "databaseId": {
+            "__rl": true,
+            "value": "24455926-7ec9-80a6-bd12-c657decac827",
+            "mode": "list",
+            "cachedResultName": "調護",
+            "cachedResultUrl": "https://www.notion.so/244559267ec980a6bd12c657decac827"
+          },
+          "title": "={{ $('Google Sheets Trigger').item.json['姓名'] }}",
+          "simple": false,
+          "propertiesUi": {
+            "propertyValues": [
+              {
+                "key": "地點|select",
+                "selectValue": "={{ $('Google Sheets Trigger').item.json['地點'] }}"
+              },
+              {
+                "key": "電話|phone_number",
+                "phoneValue": "={{\n  $('Google Sheets Trigger').item.json[\"電話\"] || null\n}}"
+              },
+              {
+                "key": "活動|multi_select",
+                "multiSelectValue": "={{ $json.full }}"
+              },
+              {
+                "key": "身份|select",
+                "selectValue": "講師"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          480,
+          -64
+        ],
+        "id": "74242866-a632-438e-92b9-f9953dbaf60c",
+        "name": "Create a database page",
+        "alwaysOutputData": true,
+        "credentials": {
+          "notionApi": {
+            "id": "I0zYECLxHQD5T26r",
+            "name": "玄門真宗"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// 讀取 Set node 的文字\nconst inputText = $json.text;\n\n// 以逗號分割\nconst parts = inputText.split(',').map(p => p.trim());\n\n// 將每一段資料拆日期與事件\nconst results = parts.map(item => {\n  const date = item.slice(0, 5);      // 前五碼：日期\n  const event = item.slice(5).trim(); // 後面：事件內容\n\n  // 合併成你想要的格式\n  const full = `${date}${event}`;\n\n  return {\n    json: {\n      full     // 只輸出一個欄位 full\n    }\n  };\n});\n\n// 回傳多筆 item\nreturn results;\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          96,
+          -64
+        ],
+        "id": "8d349d8c-02ba-4939-936f-375d0f90b413",
+        "name": "Code in JavaScript2",
+        "executeOnce": false
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "b4d92db1-6ac1-4d0d-8ffe-0cfad74e745f",
+                "name": "text",
+                "value": "=\n{{\n$json[\"活動for禪院\"] ||\n$json[\"活動for玄儒\"] ||\n$json[\"活動for玄智\"] ||\n$json[\"活動for聖道\"] ||\n$json[\"活動for山門\"] ||\n$json[\"活動for玄義\"]\n}}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -176,
+          -64
+        ],
+        "id": "df29dca0-e7ef-4b99-b431-0169cafb33f0",
+        "name": "Edit Fields1"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -480,
+          -64
+        ],
+        "id": "6d16396f-d3cb-459e-b680-00acde951868",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "name": "Replace Me",
+        "typeVersion": 1,
+        "position": [
+          720,
+          160
+        ],
+        "id": "e32d572b-697a-45aa-a197-4b16480502f4"
+      }
+    ],
+    "connections": {
+      "Google Sheets Trigger": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript2": {
+        "main": [
+          [
+            {
+              "node": "Create a database page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Replace Me": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create a database page": {
+        "main": [
+          [
+            {
+              "node": "Replace Me",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "林 韋銘",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2025-12-23T07:53:09.472Z",
+        "id": 109,
+        "workflowId": "7LXeqTvTZH07GiX3",
+        "versionId": "6e8c024f-9372-403a-a62c-3a81eb188b02",
+        "event": "activated",
+        "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a"
+      }
+    ]
+  }
+}
