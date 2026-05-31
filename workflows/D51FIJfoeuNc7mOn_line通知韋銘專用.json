@@ -1,0 +1,252 @@
+{
+  "updatedAt": "2026-02-01T11:40:23.133Z",
+  "createdAt": "2026-01-15T07:23:29.416Z",
+  "id": "D51FIJfoeuNc7mOn",
+  "name": "line通知韋銘專用",
+  "description": "透過呼叫，把訊息傳到line bot 上",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.line.me/v2/bot/message/push",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "lineMessagingApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"to\": \"Uc98ee0e068ab75b6258bcb90106d1031\", \n  \"messages\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"{{ $json.message}}\\n{{ $json.URL }}\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        8640,
+        3168
+      ],
+      "id": "01366497-061b-4bb1-bcd4-bf4f7bc3a796",
+      "name": "HTTP Request2",
+      "credentials": {
+        "lineMessagingApi": {
+          "id": "hGv5V0mtKpX0UD7p",
+          "name": "韋銘專用"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "message"
+            },
+            {
+              "name": "URL"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        8176,
+        3216
+      ],
+      "id": "360a94b5-beb6-4bc3-a0ae-cc920d74bb92",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "content": "傳送訊息到line 機器人 \"韋銘專用\"",
+        "height": 208
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        8576,
+        3104
+      ],
+      "id": "3bacc0ca-3cc2-499d-9e3c-6a5a75e9659a",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "9cdce02c-57b7-4f17-b20a-fe8f7aba22ab",
+  "activeVersionId": "9cdce02c-57b7-4f17-b20a-fe8f7aba22ab",
+  "versionCounter": 101,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-01-15T07:23:29.416Z",
+      "createdAt": "2026-01-15T07:23:29.416Z",
+      "role": "workflow:owner",
+      "workflowId": "D51FIJfoeuNc7mOn",
+      "projectId": "CJEzaYFffDb6dVsb",
+      "project": {
+        "updatedAt": "2025-06-20T12:51:16.414Z",
+        "createdAt": "2025-06-20T12:40:37.511Z",
+        "id": "CJEzaYFffDb6dVsb",
+        "name": "林 韋銘 <andesnice@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-06-20T12:40:37.511Z",
+            "createdAt": "2025-06-20T12:40:37.511Z",
+            "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+            "projectId": "CJEzaYFffDb6dVsb",
+            "user": {
+              "updatedAt": "2026-05-31T18:00:00.108Z",
+              "createdAt": "2025-06-20T12:40:30.608Z",
+              "id": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+              "email": "andesnice@gmail.com",
+              "firstName": "林",
+              "lastName": "韋銘",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "firstSuccessfulWorkflowId": "UhnBmWygF2WPjB8v",
+                "userActivatedAt": 1750476523969,
+                "easyAIWorkflowOnboarded": true
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-05-31",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-02-01T11:40:25.056Z",
+    "createdAt": "2026-02-01T11:40:23.135Z",
+    "versionId": "9cdce02c-57b7-4f17-b20a-fe8f7aba22ab",
+    "workflowId": "D51FIJfoeuNc7mOn",
+    "nodes": [
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.line.me/v2/bot/message/push",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "lineMessagingApi",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"to\": \"Uc98ee0e068ab75b6258bcb90106d1031\", \n  \"messages\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"{{ $json.message}}\\n{{ $json.URL }}\"\n    }\n  ]\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          8640,
+          3168
+        ],
+        "id": "01366497-061b-4bb1-bcd4-bf4f7bc3a796",
+        "name": "HTTP Request2",
+        "credentials": {
+          "lineMessagingApi": {
+            "id": "hGv5V0mtKpX0UD7p",
+            "name": "韋銘專用"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "message"
+              },
+              {
+                "name": "URL"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          8176,
+          3216
+        ],
+        "id": "360a94b5-beb6-4bc3-a0ae-cc920d74bb92",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "content": "傳送訊息到line 機器人 \"韋銘專用\"",
+          "height": 208
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          8576,
+          3104
+        ],
+        "id": "3bacc0ca-3cc2-499d-9e3c-6a5a75e9659a",
+        "name": "Sticky Note"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request2": {
+        "main": [
+          []
+        ]
+      }
+    },
+    "authors": "林 韋銘",
+    "name": "Version 9cdce02c",
+    "description": "",
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-02-01T11:40:25.040Z",
+        "id": 378,
+        "workflowId": "D51FIJfoeuNc7mOn",
+        "versionId": "9cdce02c-57b7-4f17-b20a-fe8f7aba22ab",
+        "event": "activated",
+        "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a"
+      }
+    ]
+  }
+}
