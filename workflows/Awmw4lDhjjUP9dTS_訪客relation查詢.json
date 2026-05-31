@@ -1,0 +1,413 @@
+{
+  "updatedAt": "2026-04-21T01:22:52.178Z",
+  "createdAt": "2025-09-10T11:38:56.358Z",
+  "id": "Awmw4lDhjjUP9dTS",
+  "name": "訪客relation查詢",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -288,
+        -80
+      ],
+      "id": "1ad45fc0-95e9-4250-bdfa-fe7b3d628150",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "20c55926-7ec9-80c0-95f6-ef83966005d4",
+          "mode": "list",
+          "cachedResultName": "查詢-出勤",
+          "cachedResultUrl": "https://www.notion.so/20c559267ec980c095f6ef83966005d4"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        176,
+        -80
+      ],
+      "id": "909073b6-8787-434b-9481-1d39e69a7275",
+      "name": "查詢-出勤",
+      "credentials": {
+        "notionApi": {
+          "id": "I0zYECLxHQD5T26r",
+          "name": "玄門真宗"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "1c055926-7ec9-8023-9d16-f69480a1b96d",
+          "mode": "list",
+          "cachedResultName": "活動參與預約單DB",
+          "cachedResultUrl": "https://www.notion.so/1c0559267ec980239d16f69480a1b96d"
+        },
+        "simple": false,
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "key": "查詢-出勤|relation",
+              "condition": "is_empty"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        -64,
+        -80
+      ],
+      "id": "a9d6e9fc-a13d-4a9b-b926-664dea4ef95f",
+      "name": "預約資料庫",
+      "credentials": {
+        "notionApi": {
+          "id": "I0zYECLxHQD5T26r",
+          "name": "玄門真宗"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('預約資料庫').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "查詢-出勤|relation",
+              "relationValue": [
+                "={{ $json.id }}"
+              ]
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        -80
+      ],
+      "id": "6d045cd2-572e-48e3-9667-887437f591a9",
+      "name": "預約資料庫關聯查詢資料庫",
+      "credentials": {
+        "notionApi": {
+          "id": "I0zYECLxHQD5T26r",
+          "name": "玄門真宗"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "預約資料庫",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "查詢-出勤": {
+      "main": [
+        [
+          {
+            "node": "預約資料庫關聯查詢資料庫",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "預約資料庫": {
+      "main": [
+        [
+          {
+            "node": "查詢-出勤",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "6e2b7152-edc4-4288-b626-3142548899c1",
+  "activeVersionId": "5c1a9c24-6ede-475f-8006-443075c0b2c9",
+  "versionCounter": 13,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-09-10T11:38:56.358Z",
+      "createdAt": "2025-09-10T11:38:56.358Z",
+      "role": "workflow:owner",
+      "workflowId": "Awmw4lDhjjUP9dTS",
+      "projectId": "CJEzaYFffDb6dVsb",
+      "project": {
+        "updatedAt": "2025-06-20T12:51:16.414Z",
+        "createdAt": "2025-06-20T12:40:37.511Z",
+        "id": "CJEzaYFffDb6dVsb",
+        "name": "林 韋銘 <andesnice@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-06-20T12:40:37.511Z",
+            "createdAt": "2025-06-20T12:40:37.511Z",
+            "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+            "projectId": "CJEzaYFffDb6dVsb",
+            "user": {
+              "updatedAt": "2026-05-31T18:00:00.108Z",
+              "createdAt": "2025-06-20T12:40:30.608Z",
+              "id": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+              "email": "andesnice@gmail.com",
+              "firstName": "林",
+              "lastName": "韋銘",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "firstSuccessfulWorkflowId": "UhnBmWygF2WPjB8v",
+                "userActivatedAt": 1750476523969,
+                "easyAIWorkflowOnboarded": true
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-05-31",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-21T08:33:39.158Z",
+      "createdAt": "2025-07-21T08:33:39.158Z",
+      "id": "bFn7sHjiXxofuzm7",
+      "name": "玄門山"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2025-12-03T13:27:49.198Z",
+    "createdAt": "2025-12-03T13:27:49.198Z",
+    "versionId": "5c1a9c24-6ede-475f-8006-443075c0b2c9",
+    "workflowId": "Awmw4lDhjjUP9dTS",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {}
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -288,
+          -80
+        ],
+        "id": "1ad45fc0-95e9-4250-bdfa-fe7b3d628150",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "getAll",
+          "databaseId": {
+            "__rl": true,
+            "value": "20c55926-7ec9-80c0-95f6-ef83966005d4",
+            "mode": "list",
+            "cachedResultName": "查詢-出勤",
+            "cachedResultUrl": "https://www.notion.so/20c559267ec980c095f6ef83966005d4"
+          },
+          "returnAll": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          160,
+          -64
+        ],
+        "id": "909073b6-8787-434b-9481-1d39e69a7275",
+        "name": "查詢-出勤",
+        "credentials": {
+          "notionApi": {
+            "id": "I0zYECLxHQD5T26r",
+            "name": "玄門真宗"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "getAll",
+          "databaseId": {
+            "__rl": true,
+            "value": "1c055926-7ec9-8023-9d16-f69480a1b96d",
+            "mode": "list",
+            "cachedResultName": "活動參與預約單DB",
+            "cachedResultUrl": "https://www.notion.so/1c0559267ec980239d16f69480a1b96d"
+          },
+          "simple": false,
+          "filterType": "manual",
+          "filters": {
+            "conditions": [
+              {
+                "key": "查詢-出勤|relation",
+                "condition": "is_empty"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          -64,
+          -80
+        ],
+        "id": "a9d6e9fc-a13d-4a9b-b926-664dea4ef95f",
+        "name": "預約資料庫",
+        "credentials": {
+          "notionApi": {
+            "id": "I0zYECLxHQD5T26r",
+            "name": "玄門真宗"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "update",
+          "pageId": {
+            "__rl": true,
+            "value": "={{ $('預約資料庫').item.json.id }}",
+            "mode": "id"
+          },
+          "propertiesUi": {
+            "propertyValues": [
+              {
+                "key": "查詢-出勤|relation",
+                "relationValue": [
+                  "={{ $json.id }}"
+                ]
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          400,
+          -64
+        ],
+        "id": "6d045cd2-572e-48e3-9667-887437f591a9",
+        "name": "預約資料庫關聯查詢資料庫",
+        "credentials": {
+          "notionApi": {
+            "id": "I0zYECLxHQD5T26r",
+            "name": "玄門真宗"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "預約資料庫",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "查詢-出勤": {
+        "main": [
+          [
+            {
+              "node": "預約資料庫關聯查詢資料庫",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "預約資料庫": {
+        "main": [
+          [
+            {
+              "node": "查詢-出勤",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2025-09-30T02:27:16.415Z",
+        "id": 11,
+        "workflowId": "Awmw4lDhjjUP9dTS",
+        "versionId": "5c1a9c24-6ede-475f-8006-443075c0b2c9",
+        "event": "activated",
+        "userId": null
+      }
+    ]
+  }
+}
