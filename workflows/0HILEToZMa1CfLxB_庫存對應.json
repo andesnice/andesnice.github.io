@@ -1,0 +1,711 @@
+{
+  "updatedAt": "2026-05-08T00:36:48.269Z",
+  "createdAt": "2025-10-03T12:10:08.120Z",
+  "id": "0HILEToZMa1CfLxB",
+  "name": "庫存對應",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "databaseId": {
+          "__rl": true,
+          "value": "a0d9af6f-f294-4b05-8a35-8801c151e782",
+          "mode": "list",
+          "cachedResultName": "出貨",
+          "cachedResultUrl": "https://www.notion.so/a0d9af6ff2944b058a358801c151e782"
+        },
+        "simple": false
+      },
+      "type": "n8n-nodes-base.notionTrigger",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        -208
+      ],
+      "id": "d6bbcbdf-ddba-4444-ad9f-a90f7115de1f",
+      "name": "出貨DB有新增資料",
+      "credentials": {
+        "notionApi": {
+          "id": "GQXAagfHT864gK5q",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "3d3eef51-c823-49d8-b5c8-eafafd76e34c",
+          "mode": "list",
+          "cachedResultName": "進貨",
+          "cachedResultUrl": "https://www.notion.so/3d3eef51c82349d8b5c8eafafd76e34c"
+        },
+        "limit": 1,
+        "simple": false,
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "key": "倉庫|relation",
+              "condition": "contains",
+              "relationValue": "={{ $json.properties['品項'].relation[0].id }}"
+            },
+            {
+              "key": "出勤單|relation",
+              "condition": "is_empty"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        -48,
+        -208
+      ],
+      "id": "40b3c5ad-6f0d-4921-b425-4c344cf46c07",
+      "name": "搜尋進貨DB對應的資料",
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "GQXAagfHT864gK5q",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "出勤單|relation",
+              "relationValue": [
+                "={{ $('出貨DB有新增資料').item.json.id }}"
+              ]
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        -320
+      ],
+      "id": "5cfaa9f4-86a8-4bdd-999c-7e79e5e61b79",
+      "name": "出進貨DB互相關聯",
+      "credentials": {
+        "notionApi": {
+          "id": "GQXAagfHT864gK5q",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5715d3e5-b94f-4767-a0c4-7da1b7cf0f09",
+              "leftValue": "={{ $('搜尋進貨DB對應的資料').item.json.object.length}}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        176,
+        -224
+      ],
+      "id": "661e769d-b08d-4d45-80f4-dcd92f150fd6",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('出貨DB有新增資料').item.json.id }}",
+          "mode": "id"
+        },
+        "simple": false,
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "備註|rich_text",
+              "textContent": "={{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        816,
+        -16
+      ],
+      "id": "c1e68f20-e3ce-4e89-aca7-615263c93eed",
+      "name": "Update a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "GQXAagfHT864gK5q",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "!!製作想法:\n當我有使用料件時，在notion上面新增一筆資料，這筆資料裡面會選擇他是哪種料件，(以下用A料件<<也就是庫存的名稱)\n下一步搜尋，我進貨的資料庫裡面A料件有哪幾個，並且這個資料對應出貨的欄位空的，\n利用if 判斷\n如果在搜尋進貨節點有資料則回傳true ，否則false\n當回傳true 時，出貨資料跟進貨資料做關聯對應\n\n如果回傳false，則在出貨資料備註顯示無借貨單",
+        "height": 528
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -560,
+        -464
+      ],
+      "typeVersion": 1,
+      "id": "b96ab95d-4ec0-43ef-968f-3989ece923cc",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=出勤單:{{ $('出貨DB有新增資料').item.json.properties['出勤單號'].title[0].text.content }}\n\n工程師已經填寫好了借貨表單，但是沒有相對應的料件，需要備註說這部分自己手寫借貨單\n\n",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=你是一個倉庫管理人員\n\n##原則\n-沒有料件顯示無借貨單\n-通知台中寄貨\n-請簡短回答，約40個字"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        368,
+        -16
+      ],
+      "id": "ef11faf8-fd0e-4131-b8bd-5a71f7bb381c",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        352,
+        160
+      ],
+      "id": "57d1d9ae-0c13-45fe-b8cf-d779498c3b0b",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "urpOlF2Hj63J2lD4",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "出貨DB有新增資料": {
+      "main": [
+        [
+          {
+            "node": "搜尋進貨DB對應的資料",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "搜尋進貨DB對應的資料": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "出進貨DB互相關聯",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Update a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Notion Trigger": {
+      "lastTimeChecked": "2025-10-03T12:24:00.000Z",
+      "possibleDuplicates": [
+        "2818db83-bd93-8006-a276-c29f801d6a09"
+      ]
+    },
+    "node:出貨DB有新增資料": {
+      "lastTimeChecked": "2026-05-13T07:29:00.000Z",
+      "possibleDuplicates": [
+        "35f8db83-bd93-80f6-a020-e6cefac495ea"
+      ]
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "25d36271-0365-49a8-97f3-d6323b1f041a",
+  "activeVersionId": "a3ab620d-cee4-47ef-8b0e-359666a43c05",
+  "versionCounter": 39,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-10-03T12:10:08.120Z",
+      "createdAt": "2025-10-03T12:10:08.120Z",
+      "role": "workflow:owner",
+      "workflowId": "0HILEToZMa1CfLxB",
+      "projectId": "CJEzaYFffDb6dVsb",
+      "project": {
+        "updatedAt": "2025-06-20T12:51:16.414Z",
+        "createdAt": "2025-06-20T12:40:37.511Z",
+        "id": "CJEzaYFffDb6dVsb",
+        "name": "林 韋銘 <andesnice@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-06-20T12:40:37.511Z",
+            "createdAt": "2025-06-20T12:40:37.511Z",
+            "userId": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+            "projectId": "CJEzaYFffDb6dVsb",
+            "user": {
+              "updatedAt": "2026-05-31T18:00:00.108Z",
+              "createdAt": "2025-06-20T12:40:30.608Z",
+              "id": "6449fe76-ff2b-4d48-bcd0-a5d0191edb1a",
+              "email": "andesnice@gmail.com",
+              "firstName": "林",
+              "lastName": "韋銘",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "firstSuccessfulWorkflowId": "UhnBmWygF2WPjB8v",
+                "userActivatedAt": 1750476523969,
+                "easyAIWorkflowOnboarded": true
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-05-31",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2025-12-03T13:27:49.198Z",
+    "createdAt": "2025-12-03T13:27:49.198Z",
+    "versionId": "a3ab620d-cee4-47ef-8b0e-359666a43c05",
+    "workflowId": "0HILEToZMa1CfLxB",
+    "nodes": [
+      {
+        "parameters": {
+          "pollTimes": {
+            "item": [
+              {
+                "mode": "everyMinute"
+              }
+            ]
+          },
+          "databaseId": {
+            "__rl": true,
+            "value": "a0d9af6f-f294-4b05-8a35-8801c151e782",
+            "mode": "list",
+            "cachedResultName": "出貨",
+            "cachedResultUrl": "https://www.notion.so/a0d9af6ff2944b058a358801c151e782"
+          },
+          "simple": false
+        },
+        "type": "n8n-nodes-base.notionTrigger",
+        "typeVersion": 1,
+        "position": [
+          -272,
+          -208
+        ],
+        "id": "d6bbcbdf-ddba-4444-ad9f-a90f7115de1f",
+        "name": "出貨DB有新增資料",
+        "credentials": {
+          "notionApi": {
+            "id": "GQXAagfHT864gK5q",
+            "name": "Notion account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "getAll",
+          "databaseId": {
+            "__rl": true,
+            "value": "3d3eef51-c823-49d8-b5c8-eafafd76e34c",
+            "mode": "list",
+            "cachedResultName": "進貨",
+            "cachedResultUrl": "https://www.notion.so/3d3eef51c82349d8b5c8eafafd76e34c"
+          },
+          "limit": 1,
+          "simple": false,
+          "filterType": "manual",
+          "matchType": "allFilters",
+          "filters": {
+            "conditions": [
+              {
+                "key": "倉庫|relation",
+                "condition": "contains",
+                "relationValue": "={{ $json.properties['品項'].relation[0].id }}"
+              },
+              {
+                "key": "出勤單|relation",
+                "condition": "is_empty"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          -48,
+          -208
+        ],
+        "id": "40b3c5ad-6f0d-4921-b425-4c344cf46c07",
+        "name": "搜尋進貨DB對應的資料",
+        "alwaysOutputData": true,
+        "credentials": {
+          "notionApi": {
+            "id": "GQXAagfHT864gK5q",
+            "name": "Notion account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "update",
+          "pageId": {
+            "__rl": true,
+            "value": "={{ $json.id }}",
+            "mode": "id"
+          },
+          "propertiesUi": {
+            "propertyValues": [
+              {
+                "key": "出勤單|relation",
+                "relationValue": [
+                  "={{ $('出貨DB有新增資料').item.json.id }}"
+                ]
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          480,
+          -320
+        ],
+        "id": "5cfaa9f4-86a8-4bdd-999c-7e79e5e61b79",
+        "name": "出進貨DB互相關聯",
+        "credentials": {
+          "notionApi": {
+            "id": "GQXAagfHT864gK5q",
+            "name": "Notion account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "5715d3e5-b94f-4767-a0c4-7da1b7cf0f09",
+                "leftValue": "={{ $('搜尋進貨DB對應的資料').item.json.object.length}}",
+                "rightValue": 1,
+                "operator": {
+                  "type": "number",
+                  "operation": "gte"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          176,
+          -224
+        ],
+        "id": "661e769d-b08d-4d45-80f4-dcd92f150fd6",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "update",
+          "pageId": {
+            "__rl": true,
+            "value": "={{ $('出貨DB有新增資料').item.json.id }}",
+            "mode": "id"
+          },
+          "simple": false,
+          "propertiesUi": {
+            "propertyValues": [
+              {
+                "key": "備註|rich_text",
+                "textContent": "={{ $json.text }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          816,
+          -16
+        ],
+        "id": "c1e68f20-e3ce-4e89-aca7-615263c93eed",
+        "name": "Update a database page",
+        "credentials": {
+          "notionApi": {
+            "id": "GQXAagfHT864gK5q",
+            "name": "Notion account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "content": "!!製作想法:\n當我有使用料件時，在notion上面新增一筆資料，這筆資料裡面會選擇他是哪種料件，(以下用A料件<<也就是庫存的名稱)\n下一步搜尋，我進貨的資料庫裡面A料件有哪幾個，並且這個資料對應出貨的欄位空的，\n利用if 判斷\n如果在搜尋進貨節點有資料則回傳true ，否則false\n當回傳true 時，出貨資料跟進貨資料做關聯對應\n\n如果回傳false，則在出貨資料備註顯示無借貨單",
+          "height": 528
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -560,
+          -464
+        ],
+        "typeVersion": 1,
+        "id": "b96ab95d-4ec0-43ef-968f-3989ece923cc",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=出勤單:{{ $('出貨DB有新增資料').item.json.properties['出勤單號'].title[0].text.content }}\n\n工程師已經填寫好了借貨表單，但是沒有相對應的料件，需要備註說這部分自己手寫借貨單\n\n",
+          "hasOutputParser": true,
+          "messages": {
+            "messageValues": [
+              {
+                "message": "=你是一個倉庫管理人員\n\n##原則\n-沒有料件顯示無借貨單\n-通知台中寄貨\n-請簡短回答，約40個字"
+              }
+            ]
+          },
+          "batching": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chainLlm",
+        "typeVersion": 1.7,
+        "position": [
+          368,
+          -16
+        ],
+        "id": "ef11faf8-fd0e-4131-b8bd-5a71f7bb381c",
+        "name": "Basic LLM Chain"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1,
+        "position": [
+          272,
+          176
+        ],
+        "id": "57d1d9ae-0c13-45fe-b8cf-d779498c3b0b",
+        "name": "Google Gemini Chat Model",
+        "credentials": {
+          "googlePalmApi": {
+            "id": "urpOlF2Hj63J2lD4",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "出貨DB有新增資料": {
+        "main": [
+          [
+            {
+              "node": "搜尋進貨DB對應的資料",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "搜尋進貨DB對應的資料": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "出進貨DB互相關聯",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Basic LLM Chain",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Gemini Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Basic LLM Chain",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Basic LLM Chain": {
+        "main": [
+          [
+            {
+              "node": "Update a database page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2025-10-19T03:06:38.757Z",
+        "id": 23,
+        "workflowId": "0HILEToZMa1CfLxB",
+        "versionId": "a3ab620d-cee4-47ef-8b0e-359666a43c05",
+        "event": "activated",
+        "userId": null
+      }
+    ]
+  }
+}
